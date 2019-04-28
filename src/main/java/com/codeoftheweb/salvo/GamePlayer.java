@@ -33,6 +33,7 @@ public class GamePlayer {
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER)
     private Set <Salvo> salvos = new HashSet<>();
 
+
     private LocalDateTime joinDate;
 
     public GamePlayer() {}
@@ -67,11 +68,12 @@ public class GamePlayer {
         return salvos;
     }
 
+
+
     public long getId() {
 
         return id;
     }
-
     public Map<String, Object> toDTO(){
         return new LinkedHashMap<String, Object>(){{
             put("id", id);

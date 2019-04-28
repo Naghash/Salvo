@@ -3,7 +3,10 @@ var games;
 var ships;
 var user;
 var salvos;
-var user2;
+var oponent;
+var oponentShips;
+var oponentSalvos;
+
 function dataCall () {
 
     var gpId = new URLSearchParams(location.search).get("gp");
@@ -18,18 +21,22 @@ function dataCall () {
     }).then(function (json) {
 
         games = json;
-        console.log(games.gameplayers[1].player.name,111)
-        ships = games.gameplayers[0].ships;
-        user = games.gameplayers[0].player.name;
-        user2 = games.gameplayers[1].player.name;
-        salvos = games.gameplayers[0].salvos;
-        console.log(salvos);
+        ships = games.gameplayer.ships;
+        user = games.gameplayer.player.name;
+        salvos = games.gameplayer.salvos;
+
+        oponent = games.oponent.player.name;
+        oponentShips = games.oponent.ships;
+        oponentSalvos = games.oponent.salvos;
         createTable(games);
         createShipLoc(ships);
         createTableSalvos(salvos);
         createSalvoLoc(salvos);
         userNames(user);
-        userName2(user2);
+        userName2(oponent);
+        createSalvoOponent(oponentSalvos);
+        createOpShips(oponentShips)
+
     }).catch(function (error) {
         console.log("Request failed: " + error.message);
     });
@@ -39,7 +46,6 @@ dataCall ();
 
 
 //game table
-
 function createTable(games){
     var tableNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var tableLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
@@ -89,8 +95,22 @@ function createShipLoc() {
     var ship2 = ships[1].location;
     var shipLocations = ship1.concat(ship2);
 
-    shipLocations.forEach(location => document.getElementById("ship"+location).style.backgroundColor = "green");
+    shipLocations.forEach(location => document.getElementById("ship"+location).id = "shipLoc" + location);
+    shipLocations.forEach(location => document.getElementById("shipLoc"+location).style.backgroundColor = "green");
+}
 
+function createSalvoOponent() {
+    var salvo1Op = oponentSalvos[0].location;
+    var salvo2Op = oponentSalvos[1].location;
+    var salvoLocationOp = salvo1Op.concat(salvo2Op);
+
+    console.log(salvoLocationOp);
+
+    salvoLocationOp.forEach(loc => {
+        document.getElementById("shipLoc"+loc) != null
+            ? document.getElementById("shipLoc"+loc).style.backgroundColor = "grey"
+            : null
+    });
 
 }
 
@@ -99,7 +119,7 @@ function userNames(user) {
 }
 function userName2(user2){
 
-    document.getElementById("player2").textContent = "Player 2:" + " " +  user2;
+    document.getElementById("player2").textContent = "Player 2:" + " " +  oponent;
 
 }
 
@@ -152,7 +172,21 @@ function createSalvoLoc() {
     var salvo2 = salvos[1].location;
     var salvoLocations = salvo1.concat(salvo2);
 
-    salvoLocations.forEach(location => document.getElementById("salvo"+location).style.backgroundColor = "red");
+    salvoLocations.forEach(location => document.getElementById("salvo"+location).id = "salvoLoc" + location);
+    salvoLocations.forEach(location => document.getElementById("salvoLoc"+location).style.backgroundColor = "red");
+
+}
+
+function createOpShips(oponentShips) {
+    var opShips1 = oponentShips[0].location;
+    var opShips2 = oponentShips[1].location;
+    var opShhipLoc = opShips1.concat(opShips2);
+
+    opShhipLoc.forEach(loc => {
+        document.getElementById("salvoLoc"+loc) != null
+            ? document.getElementById("salvoLoc"+loc).style.backgroundColor = "grey"
+            : null
+    });
 
 
 }

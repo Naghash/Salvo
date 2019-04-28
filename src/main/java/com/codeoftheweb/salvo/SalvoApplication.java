@@ -20,9 +20,9 @@ public class SalvoApplication {
 
 
     @Bean
-    public CommandLineRunner initData(PlayerRepository repositoryPlayer, GameRepository repositoryGame, GamePlayerRepository repositoryGamePlayer, ShipRepository repositoryShip, SalvoRepository repositorySalvo) {
+    public CommandLineRunner initData(PlayerRepository repositoryPlayer, GameRepository repositoryGame, GamePlayerRepository repositoryGamePlayer, ShipRepository repositoryShip, SalvoRepository repositorySalvo, ScoreRepository repositoryScore) {
         return (args) -> {
-            // save a couple of customers
+
             Player player1 = new Player("David");
             Player player2 = new Player("Angel");
             Player player3 = new Player("Jack");
@@ -36,7 +36,7 @@ public class SalvoApplication {
 
 
             Ship ship1 = new Ship(Arrays.asList("B5", "B6", "B7", "B8", "B9"), "destroyer");
-            Ship ship2 = new Ship(Arrays.asList("F4", "G4", "H4", "I4"), "huhu");
+            Ship ship2 = new Ship(Arrays.asList("F4", "G4", "H4"), "huhu");
             Ship ship3 = new Ship(Arrays.asList("A5", "A4", "A3"), "badShip");
             Ship ship4 = new Ship(Arrays.asList("C1", "D1", "E1", "F1", "G1"), "goodShip");
 
@@ -48,6 +48,10 @@ public class SalvoApplication {
 
             GamePlayer gamePlayer1 = new GamePlayer(now(), game1, player1);
             GamePlayer gamePlayer2 = new GamePlayer(now(), game1, player2);
+
+            Score score1 = new Score(now(),game1, player1);
+            Score score2 = new Score(now(),game2, player2);
+
 
             gamePlayer1.addShip(ship1);
             gamePlayer1.addShip(ship2);
@@ -81,6 +85,8 @@ public class SalvoApplication {
             repositorySalvo.save(salvo3);
             repositorySalvo.save(salvo4);
 
+            repositoryScore.save(score1);
+            repositoryScore.save(score2);
 
         };
     }

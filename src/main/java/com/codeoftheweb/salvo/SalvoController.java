@@ -36,19 +36,24 @@ public class SalvoController {
     private GamePlayerRepository repositoryGamePlayer;
     @RequestMapping("/api/game_view/{gamePlayerId}")
     private Map<String, Object> makeDTO( @PathVariable Long gamePlayerId) {
+        System.out.println("Estamos recibieno: " + gamePlayerId);
         return repositoryGamePlayer.findById(gamePlayerId)
                 .map(gamePlayer -> gamePlayer.getGame())
                 .map(game ->
                 new LinkedHashMap<String, Object>() {{
                     put("id", game.getId());
                     put("created", game.getCreationDate());
-                    put("gameplayers", game.getGamePlayers().stream()
+                    put("gameplayer", game.getGamePlayers()
+                            .stream()
+                            .filter(gp -> gp.getId() == gamePlayerId)
+                            .findFirst()
                             .map(gp -> gp.toDTO())
-                            .collect(toList()));
-                    put("oponentShips", game.getGamePlayers().stream()
+                            .orElse(null));
+                    put("oponent", game.getGamePlayers().stream()
                             .filter(gp -> gp.getId() != gamePlayerId)
-                            .map(gp -> gp.getShips())
-                    );
+                            .findFirst()
+                            .map(gp -> gp.toDTO())
+                            .orElse(null));
                 }}).orElse(null);
     }
 //    @Autowired

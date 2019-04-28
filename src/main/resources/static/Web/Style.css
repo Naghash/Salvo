@@ -3,12 +3,12 @@
     height: 450px;
 }
 .table1 td{
-    border: 3px solid darkblue;
+    border: 2px solid darkblue;
     width: 45px;
 }
 
 .container{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
