@@ -1,5 +1,6 @@
 package com.codeoftheweb.salvo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,10 +21,9 @@ public class Score {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game")
-
     private Game game;
 
-
+    private Double score;
 
     private LocalDateTime finishDate;
 
@@ -31,12 +31,14 @@ public class Score {
 
     }
 
-    public Score(LocalDateTime finishDate, Game game, Player player){
+    public Score(LocalDateTime finishDate, Double score){
         this.finishDate = finishDate;
-        this.game = game;
-        this.player = player;
+        this.score = score;
     }
 
+    public void addPlayer(Player player) {
+        this.player = player;
+    }
     public long getId() {
         return id;
     }
@@ -44,7 +46,7 @@ public class Score {
     public void setId(long id) {
         this.id = id;
     }
-
+@JsonIgnore
     public Player getPlayer() {
         return player;
     }
@@ -53,6 +55,7 @@ public class Score {
         this.player = player;
     }
 
+    @JsonIgnore
     public Game getGame() {
         return game;
     }
@@ -67,5 +70,13 @@ public class Score {
 
     public void setFinishDate(LocalDateTime finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 }

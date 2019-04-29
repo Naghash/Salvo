@@ -36,7 +36,6 @@ public class SalvoController {
     private GamePlayerRepository repositoryGamePlayer;
     @RequestMapping("/api/game_view/{gamePlayerId}")
     private Map<String, Object> makeDTO( @PathVariable Long gamePlayerId) {
-        System.out.println("Estamos recibieno: " + gamePlayerId);
         return repositoryGamePlayer.findById(gamePlayerId)
                 .map(gamePlayer -> gamePlayer.getGame())
                 .map(game ->
@@ -56,13 +55,17 @@ public class SalvoController {
                             .orElse(null));
                 }}).orElse(null);
     }
-//    @Autowired
-//    private PlayerRepository repositoryPlayer;
-//
-//    @RequestMapping("/api/players")
-//    public List<Player> getPlayer() {
-//
-//        return repositoryPlayer.findAll();
-//
-//    }
+    @Autowired
+    private PlayerRepository repositoryPlayer;
+    @RequestMapping("/api/players")
+    private  List<Object> makeDTO2 (){
+
+       return repositoryPlayer.findAll()
+
+                .stream()
+                .map(player -> player.toDTO())
+                .collect(toList());
+
+
+    }
 }

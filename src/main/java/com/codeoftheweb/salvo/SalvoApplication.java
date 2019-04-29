@@ -49,9 +49,22 @@ public class SalvoApplication {
             GamePlayer gamePlayer1 = new GamePlayer(now(), game1, player1);
             GamePlayer gamePlayer2 = new GamePlayer(now(), game1, player2);
 
-            Score score1 = new Score(now(),game1, player1);
-            Score score2 = new Score(now(),game2, player2);
+            LocalDateTime finishTime = LocalDateTime.now().minusMinutes(30);
+            LocalDateTime finishTime1 = LocalDateTime.now().minusMinutes(45);
 
+            Score score1 = new Score(finishTime, 2.0);
+            Score score2 = new Score(finishTime1,0.5);
+            Score score3 = new Score(finishTime, 1.0);
+            Score score4 = new Score(finishTime1,3.5);
+            Score score5 = new Score(finishTime, 1.5);
+            Score score6 = new Score(finishTime1,3.5);
+
+            player1.addScore(score1);
+            player2.addScore(score2);
+            player1.addScore(score3);
+            player2.addScore(score4);
+            player1.addScore(score5);
+            player2.addScore(score6);
 
             gamePlayer1.addShip(ship1);
             gamePlayer1.addShip(ship2);
@@ -87,6 +100,10 @@ public class SalvoApplication {
 
             repositoryScore.save(score1);
             repositoryScore.save(score2);
+            repositoryScore.save(score3);
+            repositoryScore.save(score4);
+            repositoryScore.save(score5);
+            repositoryScore.save(score6);
 
         };
     }

@@ -3,7 +3,7 @@ var date;
 function dataCall () {
 
 
-    fetch(`http://localhost:8080//api/games`, {
+    fetch(`http://localhost:8080//api//players`, {
         method: "GET"
     }).then(function (response) {
         if (response.ok) {
@@ -13,10 +13,9 @@ function dataCall () {
         throw new Error(response.statusText);
     }).then(function (json) {
 
-        gamesList = json;
-        date = gamesList[0].created;
-        console.log(date, 111)
-        console.log(gamesList)
+        playerList = json;
+
+        console.log(playerList)
 
         createLeaderboard()
     }).catch(function (error) {

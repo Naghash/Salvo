@@ -20,6 +20,7 @@ public class Player {
 
     @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
     Set<Score> scores = new HashSet<>();
+
     private String userName;
 
     public Player() {
@@ -53,11 +54,16 @@ public class Player {
 
         this.id = id;
     }
+    public void addScore(Score score){
+        score.addPlayer(this);
+        scores.add(score);
+    }
 
     public Map<String, Object> toDTO(){
         return new LinkedHashMap<String, Object>(){{
             put("id", id);
             put("name", userName);
+            put("score", scores);
         }};
     }
 }
