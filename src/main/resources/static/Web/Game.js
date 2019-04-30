@@ -67,7 +67,7 @@ function createTable(games){
     trNumbs.appendChild(td)
     td.textContent = number;
 
-})
+});
 
 
 

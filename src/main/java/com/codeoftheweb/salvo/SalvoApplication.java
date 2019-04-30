@@ -52,12 +52,12 @@ public class SalvoApplication {
             LocalDateTime finishTime = LocalDateTime.now().minusMinutes(30);
             LocalDateTime finishTime1 = LocalDateTime.now().minusMinutes(45);
 
-            Score score1 = new Score(finishTime, 2.0);
-            Score score2 = new Score(finishTime1,0.5);
-            Score score3 = new Score(finishTime, 1.0);
-            Score score4 = new Score(finishTime1,3.5);
-            Score score5 = new Score(finishTime, 1.5);
-            Score score6 = new Score(finishTime1,3.5);
+            Score score1 = new Score(finishTime, 1.0);
+            Score score2 = new Score(finishTime1,0.0);
+            Score score3 = new Score(finishTime, 0.5);
+            Score score4 = new Score(finishTime1,0.5);
+            Score score5 = new Score(finishTime, 1.0);
+            Score score6 = new Score(finishTime1,0.0);
 
             player1.addScore(score1);
             player2.addScore(score2);
