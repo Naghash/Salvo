@@ -55,6 +55,7 @@ public class SalvoController {
                             .orElse(null));
                 }}).orElse(null);
     }
+
     @Autowired
     private PlayerRepository repositoryPlayer;
     @RequestMapping("/api/players")
@@ -63,7 +64,7 @@ public class SalvoController {
        return repositoryPlayer.findAll()
 
                 .stream()
-                .map(player -> player.toDTO())
+                .map(player -> player.toDTO1())
                 .collect(toList());
 
 

@@ -59,7 +59,7 @@ public class Player {
         scores.add(score);
     }
 
-    public Map<String, Object> toDTO(){
+    public Map<String, Object> toDTO1(){
         return new LinkedHashMap<String, Object>(){{
             put("id", id);
             put("name", userName);

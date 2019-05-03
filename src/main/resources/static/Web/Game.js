@@ -22,12 +22,14 @@ function dataCall () {
 
         games = json;
         ships = games.gameplayer.ships;
+        console.log(ships,22222)
         user = games.gameplayer.player.name;
         salvos = games.gameplayer.salvos;
 
         oponent = games.oponent.player.name;
         oponentShips = games.oponent.ships;
         oponentSalvos = games.oponent.salvos;
+
         createTable(games);
         createShipLoc(ships);
         createTableSalvos(salvos);
@@ -45,7 +47,6 @@ function dataCall () {
 dataCall ();
 
 
-//game table
 function createTable(games){
     var tableNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var tableLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
@@ -91,27 +92,28 @@ function createTable(games){
 }
 
 function createShipLoc() {
-    var ship1 = ships[0].location;
-    var ship2 = ships[1].location;
-    var shipLocations = ship1.concat(ship2);
 
-    shipLocations.forEach(location => document.getElementById("ship"+location).id = "shipLoc" + location);
-    shipLocations.forEach(location => document.getElementById("shipLoc"+location).style.backgroundColor = "green");
+    ships.forEach(sh => {
+        sh.location.forEach(location => {
+            document.getElementById("ship" + location).id = "shipLoc" + location;
+        document.getElementById("shipLoc"+ location).style.backgroundColor = "green"
+    })
+    })
 }
 
 function createSalvoOponent() {
-    var salvo1Op = oponentSalvos[0].location;
-    var salvo2Op = oponentSalvos[1].location;
-    var salvoLocationOp = salvo1Op.concat(salvo2Op);
 
-    console.log(salvoLocationOp);
+    oponentSalvos.forEach(sal => {
+        sal.location.forEach(loc =>{
+      if  (document.getElementById("shipLoc"+loc) != null){
+            document.getElementById("shipLoc"+loc).style.backgroundColor = "grey"
+          document.getElementById("shipLoc"+loc).innerHTML = sal.turn;
 
-    salvoLocationOp.forEach(loc => {
-        document.getElementById("shipLoc"+loc) != null
-            ? document.getElementById("shipLoc"+loc).style.backgroundColor = "grey"
-            : null
-    });
+      }
+    })
 
+
+})
 }
 
 function userNames(user) {
@@ -168,25 +170,25 @@ function createTableSalvos(salvos){
     }
 }
 function createSalvoLoc() {
-    var salvo1 = salvos[0].location;
-    var salvo2 = salvos[1].location;
-    var salvoLocations = salvo1.concat(salvo2);
 
-    salvoLocations.forEach(location => document.getElementById("salvo"+location).id = "salvoLoc" + location);
-    salvoLocations.forEach(location => document.getElementById("salvoLoc"+location).style.backgroundColor = "red");
-
+    salvos.forEach(sal => {
+        sal.location.forEach(loc => {
+            document.getElementById("salvo" + loc).id = "salvoLoc" + loc;
+            document.getElementById("salvoLoc"+ loc).style.backgroundColor = "red"
+                document.getElementById("salvoLoc"+ loc).innerHTML = sal.turn;
+            }
+             )
+    })
 }
 
 function createOpShips(oponentShips) {
-    var opShips1 = oponentShips[0].location;
-    var opShips2 = oponentShips[1].location;
-    var opShhipLoc = opShips1.concat(opShips2);
 
-    opShhipLoc.forEach(loc => {
-        document.getElementById("salvoLoc"+loc) != null
-            ? document.getElementById("salvoLoc"+loc).style.backgroundColor = "grey"
-            : null
-    });
-
+    oponentShips.forEach(s => {
+        s.location.forEach(lo => {
+            document.getElementById("salvoLoc"+lo) != null
+                ? document.getElementById("salvoLoc"+lo).style.backgroundColor = "grey"
+                : null
+        })
+    })
 
 }

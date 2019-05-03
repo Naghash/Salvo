@@ -1,8 +1,29 @@
 
-function dataCall () {
-
-
+function dataCallPlayers () {
     fetch("http://localhost:8080/api/players", {
+        method: "GET"
+    }).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error(response.statusText);
+    }).then(function (json) {
+
+        playerList = json;
+        console.log(playerList,2222)
+
+        createLeaderboard()
+
+    }).catch(function (error) {
+        console.log("Request failed: " + error.message);
+    });
+
+}
+dataCallPlayers ();
+
+
+function dataCallGames () {
+    fetch("http://localhost:8080/api/games", {
         method: "GET"
     }).then(function (response) {
         if (response.ok) {
@@ -12,18 +33,30 @@ function dataCall () {
         throw new Error(response.statusText);
     }).then(function (json) {
 
-        playerList = json;
-        player1 = playerList[0];
-        player2 = playerList[1]
-        console.log(playerList,2222)
+        games = json;
+        creatingList(games);
+        console.log(games, 1111);
 
-        createLeaderboard()
     }).catch(function (error) {
         console.log("Request failed: " + error.message);
     });
 
 }
-dataCall ();
+dataCallGames ();
+
+
+function creatingList(games) {
+
+    var gameList = document.getElementById("gameList");
+    var orLlist = document.createElement("ol");
+        gameList.appendChild(orLlist);
+
+    for (let i = 0; i < games.length; i++) {
+        var list = document.createElement("li");
+            orLlist.appendChild(list);
+            list.textContent = "Game ID:" + " " + games[i].id +" was created " + games[i].created;
+    }
+}
 
 function createLeaderboard(){
 
@@ -57,11 +90,16 @@ function createLeaderboard(){
 
         var tdWin = document.createElement("td");
         trPlayer.appendChild(tdWin);
-        tdWin.textContent = player.score.map(sc => sc.score)
-            .reduce((a,b) => a + b);
+        var tdLose = document.createElement("td");
+        trPlayer.appendChild(tdLose);
+        var tdTie = document.createElement("td");
+        trPlayer.appendChild(tdTie);
+
+        tdWin.textContent = player.score.filter(sc => sc.score == 1).length;
+        tdLose.textContent = player.score.filter(sc => sc.score == 0).length;
+        tdTie.textContent = player.score.filter(sc => sc.score == 0.5).length;
+
     })
-
-
 
 
 }

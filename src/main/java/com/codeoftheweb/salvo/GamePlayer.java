@@ -77,7 +77,7 @@ public class GamePlayer {
     public Map<String, Object> toDTO(){
         return new LinkedHashMap<String, Object>(){{
             put("id", id);
-            put("player", player.toDTO());
+            put("player", player.toDTO1());
             put("ships", ships);
             put("salvos", salvos);
 
