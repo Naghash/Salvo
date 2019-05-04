@@ -23,13 +23,24 @@ public class Player {
 
     private String userName;
 
+    private String password;
+
     public Player() {
 
     }
 
-    public Player(String user) {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Player(String user, String password) {
 
         this.userName = user;
+        this.password = password;
     }
 
 
