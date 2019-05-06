@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
@@ -161,11 +162,15 @@ public class SalvoApplication{
         PlayerRepository playerRepository;
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(inputName-> {
+            auth.userDetailsService(inputName -> {
                 Player player = playerRepository.findByUserName(inputName);
                 if (player != null) {
-                    return new User(player.getUserName(),player.getPassword(),
-                            AuthorityUtils.createAuthorityList("USER"));
+                   return User
+                            .withDefaultPasswordEncoder()
+                            .username(player.getUserName())
+                            .password(player.getPassword())
+                            .roles("USER")
+                            .build();
                 } else {
                     throw new UsernameNotFoundException("Unknown user: " + inputName);
                 }
@@ -176,8 +181,6 @@ public class SalvoApplication{
     @Configuration
     @EnableWebSecurity
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
@@ -196,19 +199,10 @@ public class SalvoApplication{
 
             http.logout().logoutUrl("/api/logout");
 
-            // turn off checking for CSRF tokens
             http.csrf().disable();
-
-            // if user is not authenticated, just send an authentication failure response
             http.exceptionHandling().authenticationEntryPoint((req, res, exc) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED));
-
-            // if login is successful, just clear the flags asking for authentication
             http.formLogin().successHandler((req, res, auth) -> clearAuthenticationAttributes(req));
-
-            // if login fails, just send an authentication failure response
             http.formLogin().failureHandler((req, res, exc) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED));
-
-            // if logout is successful, just send a success response
             http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         }
 
