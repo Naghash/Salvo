@@ -5,6 +5,22 @@
     <title>Games</title>
 </head>
 <body>
+<div>
+<form id="logIn">
+    <label>Name
+    <input type="text" id="name"
+           placeholder="Enter Username" required>
+    </label>
+    <label>Password
+    <input type="password" id="password"  placeholder="Enter Password" required>
+    </label>
+    <button onclick="logIn()">Log in</button>
+    <button onclick="signIn()">Sign in</button>
+</form>
+<form id="logOut">
+    <button nclick="logOut()">Log Out</button>
+</form>
+</div>
 <h2>Games List</h2>
 <div id="gameList">
 

@@ -14,41 +14,46 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
-@RestController
+@RestController()
+@RequestMapping("/api")
 public class SalvoController {
 
     @Autowired
     private GameRepository repositoryGame;
-    @RequestMapping("/api/games")
-    public Player getAll(Authentication authentication) {
-        if(isGuest(authentication)) return null ;
+    @RequestMapping("/games")
+    public Map<String, Object> getAuth(Authentication authentication) {
+        return new LinkedHashMap<String, Object>(){{
+            put("logged_player", isGuest(authentication)? null : repositoryPlayer
+                    .findByUserName(
+                            authentication
+                                    .getName()));
+            put("games", getGame());
 
-        else
+        }};
 
-            return  repositoryPlayer.findByUserName(authentication.getName());
+    }
+
+    public List<Object> getGame() {
+        return repositoryGame
+                .findAll()
+                .stream()
+                .map(game ->
+                        new LinkedHashMap<String, Object>() {{
+                            put("id", game.getId());
+                            put("created", game.getCreationDate());
+                            put("gameplayers", game.getGamePlayers().stream()
+                                    .map(gp -> gp.toDTO()).collect(toList()));
+                        }}
+                ).collect(toList());
 
     }
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
-//    public List<Object> getGame() {
-//        return repositoryGame
-//                .findAll()
-//                .stream()
-//                .map(game ->
-//                        new LinkedHashMap<String, Object>() {{
-//                            put("id", game.getId());
-//                            put("created", game.getCreationDate());
-//                            put("gameplayers", game.getGamePlayers().stream()
-//                                    .map(gp -> gp.toDTO()).collect(toList()));
-//                        }}
-//                ).collect(toList());
-//
-//    }
 
     @Autowired
     private GamePlayerRepository repositoryGamePlayer;
-    @RequestMapping("/api/game_view/{gamePlayerId}")
+    @RequestMapping("/game_view/{gamePlayerId}")
     private Map<String, Object> makeDTO( @PathVariable Long gamePlayerId) {
         return repositoryGamePlayer.findById(gamePlayerId)
                 .map(gamePlayer -> gamePlayer.getGame())
@@ -70,9 +75,8 @@ public class SalvoController {
                 }}).orElse(null);
     }
 
-    @Autowired
-    private PlayerRepository repositoryPlayer;
-    @RequestMapping("/api/players")
+
+    @RequestMapping("/players")
     private  List<Object> makeDTO2 (){
 
        return repositoryPlayer.findAll()
@@ -85,8 +89,9 @@ public class SalvoController {
     }
 
 
-
-    @RequestMapping(path = "api/players", method = RequestMethod.POST)
+    @Autowired
+    private PlayerRepository repositoryPlayer;
+    @RequestMapping(path = "/players", method = RequestMethod.POST)
     public ResponseEntity<Object> register(
             @RequestParam String userName, @RequestParam String password) {
 

@@ -1,5 +1,6 @@
 package com.codeoftheweb.salvo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class Player {
 
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -37,9 +39,9 @@ public class Player {
         this.password = password;
     }
 
-    public Player(String user, String password) {
+    public Player(String userName, String password) {
 
-        this.userName = user;
+        this.userName = userName;
         this.password = password;
     }
 
@@ -65,6 +67,7 @@ public class Player {
 
         this.id = id;
     }
+
     public void addScore(Score score){
         score.addPlayer(this);
         scores.add(score);

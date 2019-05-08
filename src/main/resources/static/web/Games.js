@@ -33,7 +33,8 @@ function dataCallGames () {
         throw new Error(response.statusText);
     }).then(function (json) {
 
-        games = json;
+        PlayerGames = json;
+        games = PlayerGames.games;
         creatingList(games);
         console.log(games, 1111);
 
@@ -101,5 +102,62 @@ function createLeaderboard(){
 
     })
 
+
+}
+const signIn = () => {
+    let userName = document.getElementById("name").value;
+    let password = document.getElementById("password").value;
+
+    fetch("http://localhost:8080/api/players", {
+        method: 'POST',
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body:"userName=" + userName + "&password=" + password
+    }).then(function (response) {
+
+    }).catch(function(error) {
+        alert('Player not saved: ' + error.message);
+    });
+
+}
+
+const logIn = () => {
+    let userName = document.getElementById("name").value;
+    let password = document.getElementById("password").value;
+
+    fetch("http://localhost:8080/api/login", {
+        method: 'POST',
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body:"userName=" + userName + "&password=" + password
+    }).then(function (response) {
+
+        alert(response.status)
+        if (response.ok) {
+            alert( 'Logged in!' );
+        }
+        }).catch(function(error) {
+        alert('Not logged in: ' + error.message);
+    });
+
+}
+
+const logOut = () => {
+
+    fetch("http://localhost:8080/api/logout", {
+        method: 'POST',
+    }).then(function (response) {
+
+        alert(response.status)
+        if (response.ok) {
+            alert( 'Logged out!' );
+        }
+    }).catch(function(error) {
+        alert('Not logged out: ' + error.message);
+    });
 
 }
