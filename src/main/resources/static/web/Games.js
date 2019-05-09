@@ -33,8 +33,10 @@ function dataCallGames () {
         throw new Error(response.statusText);
     }).then(function (json) {
 
-        PlayerGames = json;
-        games = PlayerGames.games;
+        playerGames = json;
+        games = playerGames.games;
+        gamePlayers = playerGames.games[0];
+
         creatingList(games);
         console.log(games, 1111);
 
@@ -49,34 +51,35 @@ dataCallGames ();
 function creatingList(games) {
 
     var gameList = document.getElementById("gameList");
-    var orLlist = document.createElement("ol");
-        gameList.appendChild(orLlist);
-
-    for (let i = 0; i < games.length; i++) {
+    var urList = document.createElement("ul");
+    gameList.appendChild(urList);
+    games.forEach(game => {
         var list = document.createElement("li");
-            orLlist.appendChild(list);
-            list.textContent = "Game ID:" + " " + games[i].id +" was created " + games[i].created;
-    }
+        urList.appendChild(list);
+            var playerName = game.gameplayers.map(gp => gp.player.name)
+            list.textContent = "Game " + game.id + " was created " + game.created + ", " +
+                "Players: " + playerName[0] + " vs " + playerName[1]
+    })
 }
 
-function createLeaderboard(){
+function createLeaderboard() {
 
     var table = document.getElementById("leaderboard");
     var thead = document.createElement("thead");
-        table.appendChild(thead);
+    table.appendChild(thead);
     var trTh = document.createElement("tr");
-        thead.appendChild(trTh);
-        var tbody = document.createElement("tbody");
-        table.appendChild(tbody);
+    thead.appendChild(trTh);
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
 
-        var ths = ["Name", "Total", "Won", "Lost", "Tied"];
+    var ths = ["Name", "Total", "Won", "Lost", "Tied"];
 
-        ths.forEach(th => {
-            var th1 = document.createElement("th");
-                trTh.appendChild(th1);
-                th1.textContent = th;
-                th1.className = th;
-        })
+    ths.forEach(th => {
+        var th1 = document.createElement("th");
+        trTh.appendChild(th1);
+        th1.textContent = th;
+        th1.className = th;
+    })
 
     playerList.forEach(player => {
         var trPlayer = document.createElement("tr");
@@ -102,11 +105,15 @@ function createLeaderboard(){
 
     })
 
-
 }
+
+
 const signIn = () => {
     let userName = document.getElementById("name").value;
     let password = document.getElementById("password").value;
+    if (userName || password == null) {
+        alert("Username or password is empty")
+    }
 
     fetch("http://localhost:8080/api/players", {
         method: 'POST',
@@ -116,12 +123,14 @@ const signIn = () => {
         },
         body:"userName=" + userName + "&password=" + password
     }).then(function (response) {
-
+        let logInButton = document.getElementById("logInForm");
+        if (response.ok) {
+            logInButton.style.display = "none"}
     }).catch(function(error) {
         alert('Player not saved: ' + error.message);
     });
 
-}
+};
 
 const logIn = () => {
     let userName = document.getElementById("name").value;
@@ -136,9 +145,12 @@ const logIn = () => {
         body:"userName=" + userName + "&password=" + password
     }).then(function (response) {
 
-        alert(response.status)
+        let logInButton = document.getElementById("logInForm");
+        let logOutButton = document.getElementById("logOutForm");
+
         if (response.ok) {
-            alert( 'Logged in!' );
+            logOutButton.style.display = "block";
+            logInButton.style.display = "none"
         }
         }).catch(function(error) {
         alert('Not logged in: ' + error.message);
@@ -152,9 +164,12 @@ const logOut = () => {
         method: 'POST',
     }).then(function (response) {
 
-        alert(response.status)
+        let logInButton = document.getElementById("logInForm");
+        let logOutButton = document.getElementById("logOutForm");
+
         if (response.ok) {
-            alert( 'Logged out!' );
+            logOutButton.style.display = "none";
+            logInButton.style.display = "block"
         }
     }).catch(function(error) {
         alert('Not logged out: ' + error.message);

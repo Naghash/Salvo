@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Games</title>
+    <link rel="stylesheet" href="games.css">
 </head>
 <body>
 <div>
-<form id="logIn">
+<div id="logInForm">
     <label>Name
     <input type="text" id="name"
            placeholder="Enter Username" required>
@@ -16,10 +17,10 @@
     </label>
     <button onclick="logIn()">Log in</button>
     <button onclick="signIn()">Sign in</button>
-</form>
-<form id="logOut">
-    <button nclick="logOut()">Log Out</button>
-</form>
+</div>
+<div id="logOutForm">
+    <button onclick="logOut()">Log Out</button>
+</div>
 </div>
 <h2>Games List</h2>
 <div id="gameList">
