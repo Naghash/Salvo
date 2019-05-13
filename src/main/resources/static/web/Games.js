@@ -37,8 +37,9 @@ function dataCallGames () {
         games = playerGames.games;
         gamePlayers = playerGames.games[0];
 
-        creatingList(games);
-        console.log(games, 1111);
+        // creatingList(games);
+        // crearLista(playerGames);
+        showButtoms();
 
     }).catch(function (error) {
         console.log("Request failed: " + error.message);
@@ -48,19 +49,68 @@ function dataCallGames () {
 dataCallGames ();
 
 
-function creatingList(games) {
 
-    var gameList = document.getElementById("gameList");
-    var urList = document.createElement("ul");
-    gameList.appendChild(urList);
-    games.forEach(game => {
-        var list = document.createElement("li");
-        urList.appendChild(list);
-            var playerName = game.gameplayers.map(gp => gp.player.name)
-            list.textContent = "Game " + game.id + " was created " + game.created + ", " +
-                "Players: " + playerName[0] + " vs " + playerName[1]
-    })
+const showButtoms =()=> {
+    const playerName =document.getElementById("playerName");
+    const logged_user = playerGames.logged_player;
+    const logInButton = document.getElementById("logInForm");
+    const logOutButton = document.getElementById("logOutForm");
+
+    console.log(logged_user,5555)
+
+    if(logged_user != null){
+    playerName.innerHTML = logged_user.userName;
+    logOutButton.style.display = "block";
+    logInButton.style.display = "none"
+    }else {
+        logOutButton.style.display = "none";
+        logInButton.style.display = "block"
+    }
 }
+
+//
+// if (games.logged_player){
+//     const playerId = games.logged_player.id;
+//     console.log(gpId);
+//     document.getElementById("gameList").innerHTML = games.games
+//         .map(game => {
+//                 const gp = game.gamePlayers.find(gp => gp.player.id === playerId)
+//             if (gp) {
+//                 const gpId = gp.id;
+//                 return `<ul><a href="game.html/${gpId}">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
+//                </ul>`  //go to game
+//             } else if(game.gamePlayers.length < 2) {
+//                 return `<ul><a href="game.html/${gpId}">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
+//                </ul>` //join game
+//
+//             } else {
+//
+//             }
+//
+//
+//         }).join("");
+// } else {
+//     document.getElementById("gameList").innerHTML = games.games
+//         .map(game => `<ul><a href="#">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
+//                </ul>`
+//         ).join("");
+// }
+// function creatingList(games) {
+//
+//     var gameList = document.getElementById("gameList");
+//     var urList = document.createElement("ul");
+//     gameList.appendChild(urList);
+//     games.forEach(game => {
+//         var list = document.createElement("li");
+//         urList.appendChild(list);
+//             var playerName = game.gameplayers.map(gp => gp.player.name)
+//             list.textContent = "Game " + game.id + " was created " + game.created + ", " +
+//                 "Players: " + playerName[0] + " vs " + playerName[1]
+//     })
+// }
+// function crearLista(games) {
+//     console.log(gpId,55444)
+// }
 
 function createLeaderboard() {
 
@@ -111,9 +161,6 @@ function createLeaderboard() {
 const signIn = () => {
     let userName = document.getElementById("name").value;
     let password = document.getElementById("password").value;
-    if (userName || password == null) {
-        alert("Username or password is empty")
-    }
 
     fetch("http://localhost:8080/api/players", {
         method: 'POST',
@@ -123,9 +170,10 @@ const signIn = () => {
         },
         body:"userName=" + userName + "&password=" + password
     }).then(function (response) {
-        let logInButton = document.getElementById("logInForm");
-        if (response.ok) {
-            logInButton.style.display = "none"}
+        if (response.ok){
+            logIn();
+        }
+
     }).catch(function(error) {
         alert('Player not saved: ' + error.message);
     });
@@ -144,14 +192,9 @@ const logIn = () => {
         },
         body:"userName=" + userName + "&password=" + password
     }).then(function (response) {
-
-        let logInButton = document.getElementById("logInForm");
-        let logOutButton = document.getElementById("logOutForm");
-
-        if (response.ok) {
-            logOutButton.style.display = "block";
-            logInButton.style.display = "none"
-        }
+        if (response.ok){
+            location.reload();
+    }
         }).catch(function(error) {
         alert('Not logged in: ' + error.message);
     });
@@ -163,13 +206,8 @@ const logOut = () => {
     fetch("http://localhost:8080/api/logout", {
         method: 'POST',
     }).then(function (response) {
-
-        let logInButton = document.getElementById("logInForm");
-        let logOutButton = document.getElementById("logOutForm");
-
-        if (response.ok) {
-            logOutButton.style.display = "none";
-            logInButton.style.display = "block"
+        if (response.ok){
+            location.reload();
         }
     }).catch(function(error) {
         alert('Not logged out: ' + error.message);

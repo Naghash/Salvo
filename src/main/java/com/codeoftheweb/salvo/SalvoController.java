@@ -7,11 +7,14 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.sun.deploy.perf.DeployPerfUtil.put;
 import static java.util.stream.Collectors.toList;
 
 @RestController()
@@ -54,26 +57,48 @@ public class SalvoController {
     @Autowired
     private GamePlayerRepository repositoryGamePlayer;
     @RequestMapping("/game_view/{gamePlayerId}")
-    private Map<String, Object> makeDTO( @PathVariable Long gamePlayerId) {
-        return repositoryGamePlayer.findById(gamePlayerId)
-                .map(gamePlayer -> gamePlayer.getGame())
-                .map(game ->
-                new LinkedHashMap<String, Object>() {{
-                    put("id", game.getId());
-                    put("created", game.getCreationDate());
-                    put("gameplayer", game.getGamePlayers()
-                            .stream()
-                            .filter(gp -> gp.getId() == gamePlayerId)
-                            .findFirst()
-                            .map(gp -> gp.toDTO())
-                            .orElse(null));
-                    put("oponent", game.getGamePlayers().stream()
-                            .filter(gp -> gp.getId() != gamePlayerId)
-                            .findFirst()
-                            .map(gp -> gp.toDTO())
-                            .orElse(null));
-                }}).orElse(null);
+
+    private ResponseEntity<Map<String, Object>> makeDTO( @PathVariable Long gamePlayerId, Authentication authentication) {
+
+        Optional<GamePlayer> gameP = repositoryGamePlayer.findById(gamePlayerId);
+
+        if (gameP.isPresent() && authentication.getName() != null) {
+
+            long playerID = gameP.get().getPlayer().getId();
+            long userID = repositoryPlayer.findByUserName(authentication.getName()).getId();
+
+            if (playerID == userID) {
+                return new ResponseEntity<>(repositoryGamePlayer.findById(gamePlayerId)
+                        .map(gamePlayer -> gamePlayer.getGame())
+                        .map(game ->
+                                new LinkedHashMap<String, Object>() {{
+                                    put("id", game.getId());
+                                    put("created", game.getCreationDate());
+                                    put("gameplayer", game.getGamePlayers()
+                                            .stream()
+                                            .filter(gp -> gp.getId() == gamePlayerId)
+                                            .findFirst()
+                                            .map(gp -> gp.toDTO())
+                                            .orElse(null));
+                                    put("oponent", game.getGamePlayers().stream()
+                                            .filter(gp -> gp.getId() != gamePlayerId)
+                                            .findFirst()
+                                            .map(gp -> gp.toDTO())
+                                            .orElse(null));
+                                }}).orElse(null), HttpStatus.OK);
+            } else {
+
+                return new ResponseEntity<>( new LinkedHashMap<String, Object>() {{
+                            put("message", "You are not authorized");
+                        }}, HttpStatus.UNAUTHORIZED);
+            }
+        } else {  return new ResponseEntity<>( new LinkedHashMap<String, Object>() {{
+            put("message", "You are not authorized");
+        }},HttpStatus.FORBIDDEN);
+
+        }
     }
+
 
 
     @RequestMapping("/players")

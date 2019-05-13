@@ -15,14 +15,12 @@ function dataCall () {
     }).then(function (response) {
         if (response.ok) {
             return response.json();
-
         }
         throw new Error(response.statusText);
     }).then(function (json) {
 
         games = json;
         ships = games.gameplayer.ships;
-        console.log(ships,22222)
         user = games.gameplayer.player.name;
         salvos = games.gameplayer.salvos;
 
