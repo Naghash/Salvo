@@ -203,14 +203,15 @@ const newGame =()=>{
         credentials: "include",
     }).then(function (response) {
         if (response.ok) {
+            console.log("success")
+
             return response.json();
         }
     }).then(function (json) {
         console.log("ok2")
-            nuevogame = json;
-        console.log(nuevogame,5252);
-        //
-        // const gpId = nuevogame.gpId;
+          const  nuevoGame = json;
+        console.log(nuevoGame, "newgameJSON")
+        const gpId = nuevoGame.gpId;
         // location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
     }).catch(function(error) {
         alert("Not logged in:" + error.message);

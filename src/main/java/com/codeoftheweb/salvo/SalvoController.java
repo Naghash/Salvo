@@ -15,8 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static com.sun.deploy.perf.DeployPerfUtil.put;
 import static java.util.stream.Collectors.toList;
 
 @RestController()
@@ -147,10 +145,12 @@ public class SalvoController {
                     Map<String, Object> newGame = new LinkedHashMap<>();
                     Game game1 = new Game(LocalDateTime.now());
                     GamePlayer gamePlayer = new GamePlayer(LocalDateTime.now(), game1, player4);
-                    repositoryGamePlayer.save(gamePlayer);
                     repositoryGame.save(game1);
+                    repositoryGamePlayer.save(gamePlayer);
 
                     newGame.put("gpId", gamePlayer.getId());
+                    newGame.put("gplayer", gamePlayer.getPlayer());
+                    newGame.put("gpgame", gamePlayer.getGame());
 
 
                     return new ResponseEntity<>(newGame, HttpStatus.CREATED);
