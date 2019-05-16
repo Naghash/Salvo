@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,11 +65,12 @@ public class SalvoController {
         Optional<GamePlayer> gameP = repositoryGamePlayer.findById(gamePlayerId);
 
         if (gameP.isPresent() && authentication.getName() != null) {
-
+            System.out.println("hey1");
             long playerID = gameP.get().getPlayer().getId();
             long userID = repositoryPlayer.findByUserName(authentication.getName()).getId();
 
             if (playerID == userID) {
+                System.out.println("hey2");
                 return new ResponseEntity<>(repositoryGamePlayer.findById(gamePlayerId)
                         .map(gamePlayer -> gamePlayer.getGame())
                         .map(game ->
@@ -87,14 +90,16 @@ public class SalvoController {
                                             .orElse(null));
                                 }}).orElse(null), HttpStatus.OK);
             } else {
-
+                System.out.println("hey3");
                 return new ResponseEntity<>( new LinkedHashMap<String, Object>() {{
                             put("message", "You are not authorized");
-                        }}, HttpStatus.UNAUTHORIZED);
+                        }}, HttpStatus.FORBIDDEN);
             }
-        } else {  return new ResponseEntity<>( new LinkedHashMap<String, Object>() {{
+        } else {
+            System.out.println("4");
+            return new ResponseEntity<>( new LinkedHashMap<String, Object>() {{
             put("message", "You are not authorized");
-        }},HttpStatus.FORBIDDEN);
+        }},HttpStatus.UNAUTHORIZED);
 
         }
     }
@@ -131,4 +136,39 @@ public class SalvoController {
         repositoryPlayer.save(new Player(userName, password));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-}
+
+    @RequestMapping(path = "/games", method = RequestMethod.POST)
+    public ResponseEntity <Map<String, Object>> createGame(Authentication authentication){
+
+            if (authentication != null) {
+                Player player4 = repositoryPlayer.findByUserName(authentication.getName());
+
+                if (player4 != null) {
+                    Map<String, Object> newGame = new LinkedHashMap<>();
+                    Game game1 = new Game(LocalDateTime.now());
+                    GamePlayer gamePlayer = new GamePlayer(LocalDateTime.now(), game1, player4);
+                    repositoryGamePlayer.save(gamePlayer);
+                    repositoryGame.save(game1);
+
+                    newGame.put("gpId", gamePlayer.getId());
+
+
+                    return new ResponseEntity<>(newGame, HttpStatus.CREATED);
+
+                } else {
+                    return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                        put("error", "Log in!");
+                    }} , HttpStatus.UNAUTHORIZED);
+                }
+
+            } else {
+                return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                    put("error", "Log in!");
+                }} , HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
+
+
+
+

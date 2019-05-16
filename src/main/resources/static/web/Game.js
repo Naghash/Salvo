@@ -10,7 +10,7 @@ var oponentSalvos;
 function dataCall () {
 
     var gpId = new URLSearchParams(location.search).get("gp");
-    fetch(`http://localhost:8080//api/game_view/${gpId}`, {
+    fetch(`http://localhost:8080/api/game_view/${gpId}`, {
         method: "GET"
     }).then(function (response) {
         if (response.ok) {

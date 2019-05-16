@@ -1,5 +1,6 @@
 
 function dataCallPlayers () {
+
     fetch("http://localhost:8080/api/players", {
         method: "GET"
     }).then(function (response) {
@@ -10,7 +11,6 @@ function dataCallPlayers () {
     }).then(function (json) {
 
         playerList = json;
-        console.log(playerList,2222)
 
         createLeaderboard()
 
@@ -37,8 +37,7 @@ function dataCallGames () {
         games = playerGames.games;
         gamePlayers = playerGames.games[0];
 
-        // creatingList(games);
-        // crearLista(playerGames);
+        createList(playerGames);
         showButtoms();
 
     }).catch(function (error) {
@@ -50,67 +49,32 @@ dataCallGames ();
 
 
 
-const showButtoms =()=> {
-    const playerName =document.getElementById("playerName");
-    const logged_user = playerGames.logged_player;
-    const logInButton = document.getElementById("logInForm");
-    const logOutButton = document.getElementById("logOutForm");
+function createList(playerGames) {
 
-    console.log(logged_user,5555)
+    if (playerGames.logged_player) {
+        const playerId = playerGames.logged_player.id;
+        document.getElementById("gameList").innerHTML = games.map(game => {
 
-    if(logged_user != null){
-    playerName.innerHTML = logged_user.userName;
-    logOutButton.style.display = "block";
-    logInButton.style.display = "none"
-    }else {
-        logOutButton.style.display = "none";
-        logInButton.style.display = "block"
+                const gp = game.gameplayers.find(gp => gp.player.id === playerId);
+                if (gp) {
+                    const gpId = gp.id;
+                    return `<ul><a href="game.html?gp=${gpId}"> ${game.id},${game.created},${game.gameplayers
+                        .map(gp => gp.player.name)}, <b>Go to Game</b></a>
+               </ul>`
+                } else if (game.gameplayers.length < 2) {
+                    return `<ul><button>${game.id},${game.created},${game.gameplayers
+                        .map(gp => gp.player.name)}, <b>Join the Game</b><button/>
+               </ul>`
+
+
+
+                }
+
+        }).join("");
     }
+
 }
 
-//
-// if (games.logged_player){
-//     const playerId = games.logged_player.id;
-//     console.log(gpId);
-//     document.getElementById("gameList").innerHTML = games.games
-//         .map(game => {
-//                 const gp = game.gamePlayers.find(gp => gp.player.id === playerId)
-//             if (gp) {
-//                 const gpId = gp.id;
-//                 return `<ul><a href="game.html/${gpId}">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
-//                </ul>`  //go to game
-//             } else if(game.gamePlayers.length < 2) {
-//                 return `<ul><a href="game.html/${gpId}">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
-//                </ul>` //join game
-//
-//             } else {
-//
-//             }
-//
-//
-//         }).join("");
-// } else {
-//     document.getElementById("gameList").innerHTML = games.games
-//         .map(game => `<ul><a href="#">${game.id},${game.created},${game.gameplayers.map(gp => gp.player.name)}</a>
-//                </ul>`
-//         ).join("");
-// }
-// function creatingList(games) {
-//
-//     var gameList = document.getElementById("gameList");
-//     var urList = document.createElement("ul");
-//     gameList.appendChild(urList);
-//     games.forEach(game => {
-//         var list = document.createElement("li");
-//         urList.appendChild(list);
-//             var playerName = game.gameplayers.map(gp => gp.player.name)
-//             list.textContent = "Game " + game.id + " was created " + game.created + ", " +
-//                 "Players: " + playerName[0] + " vs " + playerName[1]
-//     })
-// }
-// function crearLista(games) {
-//     console.log(gpId,55444)
-// }
 
 function createLeaderboard() {
 
@@ -211,6 +175,45 @@ const logOut = () => {
         }
     }).catch(function(error) {
         alert('Not logged out: ' + error.message);
+    });
+
+}
+
+const showButtoms =()=> {
+    const playerName =document.getElementById("playerName");
+    const logged_user = playerGames.logged_player;
+    const logInButton = document.getElementById("logInForm");
+    const logOutButton = document.getElementById("logOutForm");
+
+    console.log(logged_user,5555)
+
+    if(logged_user != null){
+        playerName.innerHTML = logged_user.userName;
+        logOutButton.style.display = "block";
+        logInButton.style.display = "none"
+    }else {
+        logOutButton.style.display = "none";
+        logInButton.style.display = "block"
+    }
+}
+
+const newGame =()=>{
+    fetch("http://localhost:8080/api/games", {
+        method: 'POST',
+        credentials: "include",
+    }).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then(function (json) {
+        console.log("ok2")
+            nuevogame = json;
+        console.log(nuevogame,5252);
+        //
+        // const gpId = nuevogame.gpId;
+        // location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
+    }).catch(function(error) {
+        alert("Not logged in:" + error.message);
     });
 
 }
