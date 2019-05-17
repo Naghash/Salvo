@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -167,6 +168,44 @@ public class SalvoController {
                 }} , HttpStatus.UNAUTHORIZED);
             }
         }
+
+    @RequestMapping(path = "/games/{gameId}/players", method = RequestMethod.POST)
+    public ResponseEntity <Map<String, Object>> joinGame( @PathVariable Long gameId, Authentication authentication){
+
+        Optional<Game> game1 = repositoryGame.findById(gameId);
+
+        if (authentication == null) {
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                put("error", "Log in!");
+            }} , HttpStatus.FORBIDDEN);
+        }
+        if (!game1.isPresent()) {
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                put("error", "Game does not exist!");
+            }} , HttpStatus.FORBIDDEN);
+        }
+
+       if (game1.get().getGamePlayers().size()!=1) {
+           return new ResponseEntity<>(new LinkedHashMap<String, Object>() {{
+               put("error", "The size isnt 1!");
+           }}, HttpStatus.FORBIDDEN);
+       }
+
+                Map<String, Object> joinedPlayer = new LinkedHashMap<>();
+
+                Player  player = repositoryPlayer.findByUserName(authentication.getName());
+                GamePlayer gamePlayer = new GamePlayer(LocalDateTime.now(), game1.get(), player);
+                repositoryGamePlayer.save(gamePlayer);
+
+                joinedPlayer.put("gpId", gamePlayer.getId());
+               joinedPlayer.put("gplayer", gamePlayer.getPlayer());
+                joinedPlayer.put("gpgame", gamePlayer.getGame());
+
+
+                return new ResponseEntity<>(joinedPlayer, HttpStatus.CREATED);
+
+            }
+
     }
 
 

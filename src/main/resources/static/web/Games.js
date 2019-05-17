@@ -58,18 +58,14 @@ function createList(playerGames) {
                 const gp = game.gameplayers.find(gp => gp.player.id === playerId);
                 if (gp) {
                     const gpId = gp.id;
-                    return `<ul><a href="game.html?gp=${gpId}"> ${game.id},${game.created},${game.gameplayers
-                        .map(gp => gp.player.name)}, <b>Go to Game</b></a>
+                    return `<ul><li> ${game.id},${game.created},${game.gameplayers
+                        .map(gp => gp.player.name)}<button> <a href="game.html?gp=${gpId}"><b>Go to Game</b></button></li>
                </ul>`
                 } else if (game.gameplayers.length < 2) {
-                    return `<ul><button>${game.id},${game.created},${game.gameplayers
-                        .map(gp => gp.player.name)}, <b>Join the Game</b><button/>
+                    return `<ul><li> ${game.id},${game.created},${game.gameplayers
+                        .map(gp => gp.player.name)}</li>
                </ul>`
-
-
-
                 }
-
         }).join("");
     }
 
@@ -212,7 +208,7 @@ const newGame =()=>{
           const  nuevoGame = json;
         console.log(nuevoGame, "newgameJSON")
         const gpId = nuevoGame.gpId;
-        // location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
+        location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
     }).catch(function(error) {
         alert("Not logged in:" + error.message);
     });
