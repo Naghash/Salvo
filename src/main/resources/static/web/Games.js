@@ -56,19 +56,22 @@ function createList(playerGames) {
         document.getElementById("gameList").innerHTML = games.map(game => {
 
                 const gp = game.gameplayers.find(gp => gp.player.id === playerId);
+                const gameId =game.id;
+                console.log(gameId,101)
                 if (gp) {
                     const gpId = gp.id;
                     return `<ul><li> ${game.id},${game.created},${game.gameplayers
-                        .map(gp => gp.player.name)}<button> <a href="game.html?gp=${gpId}"><b>Go to Game</b></button></li>
+                        .map(gp => gp.player.name)}<button> <a href="game.html?gp=${gpId}"><b>Go to Game</b></a></button></li>
                </ul>`
                 } else if (game.gameplayers.length < 2) {
                     return `<ul><li> ${game.id},${game.created},${game.gameplayers
-                        .map(gp => gp.player.name)}</li>
+                        .map(gp => gp.player.name)}<button onclick="joinGame()"> <b>Join the Game</b></button></li>
                </ul>`
                 }
         }).join("");
-    }
 
+
+}
 }
 
 
@@ -214,3 +217,48 @@ const newGame =()=>{
     });
 
 }
+
+ async function joinGame (game)  {
+    try {
+        // const gameId = playerGames.games.map(game =>{
+        //     console.log(game.id,787)
+        //     game.id;
+        // });
+        let response = await fetch(`http://localhost:8080/api/games/${3}/players`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+        const message = await response.json();
+        if (response.status === 201) {
+            // window.location.href = `http://localhost:8080/web/game.html?gp=${message.gpId}`;
+        } else if (response.status === 403) {
+            alert("you suck")
+        } else{
+            alert("Something went wrong, try again later");
+        }
+    } catch (error) {
+        console.log("Error: ", error)
+    }
+}
+
+// const joinGame =()=>{
+//     fetch(`http://localhost:8080/api/games/${gameId}/players`, {
+//         method: 'POST',
+//         credentials: "include",
+//     }).then(function (response) {
+//         if (response.ok) {
+//             console.log("success")
+//
+//             return response.json();
+//         }
+//     }).then(function (json) {
+//         console.log("ok2")
+//          joinedGame = json;
+//        console.log(joinedGame,4545)
+//         // const gpId = joinedGame.gpId;
+//         // location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
+//     }).catch(function(error) {
+//         alert("Not logged in:" + error.message);
+//     });
+//
+// }

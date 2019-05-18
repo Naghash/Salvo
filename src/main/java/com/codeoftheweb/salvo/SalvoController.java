@@ -175,11 +175,13 @@ public class SalvoController {
         Optional<Game> game1 = repositoryGame.findById(gameId);
 
         if (authentication == null) {
+            System.out.println("its ok 1");
             return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
                 put("error", "Log in!");
             }} , HttpStatus.FORBIDDEN);
         }
         if (!game1.isPresent()) {
+            System.out.println("its ok 2");
             return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
                 put("error", "Game does not exist!");
             }} , HttpStatus.FORBIDDEN);
@@ -187,6 +189,8 @@ public class SalvoController {
 
        if (game1.get().getGamePlayers().size()!=1) {
            return new ResponseEntity<>(new LinkedHashMap<String, Object>() {{
+               System.out.println("the size");
+
                put("error", "The size isnt 1!");
            }}, HttpStatus.FORBIDDEN);
        }
@@ -197,11 +201,11 @@ public class SalvoController {
                 GamePlayer gamePlayer = new GamePlayer(LocalDateTime.now(), game1.get(), player);
                 repositoryGamePlayer.save(gamePlayer);
 
+                joinedPlayer.put("game", gamePlayer.getGame());
                 joinedPlayer.put("gpId", gamePlayer.getId());
-               joinedPlayer.put("gplayer", gamePlayer.getPlayer());
-                joinedPlayer.put("gpgame", gamePlayer.getGame());
 
-
+        System.out.println("here we go");
+        System.out.println(gamePlayer.getGame().getId());
                 return new ResponseEntity<>(joinedPlayer, HttpStatus.CREATED);
 
             }
