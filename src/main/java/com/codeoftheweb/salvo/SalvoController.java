@@ -82,11 +82,18 @@ public class SalvoController {
                                             .findFirst()
                                             .map(gp -> gp.toDTO())
                                             .orElse(null));
-                                    put("oponent", game.getGamePlayers().stream()
+                                    put("oponent", game.getGamePlayers()
+                                            .stream()
                                             .filter(gp -> gp.getId() != gamePlayerId)
                                             .findFirst()
-                                            .map(gp -> gp.toDTO())
-                                            .orElse(null));
+                                            .map(gp ->
+                                                    new LinkedHashMap<String, Object>() {{
+                                                    put("id", gp.getId());
+                                                    put("player", gp.getPlayer().toDTO1());
+                                                    put("salvos", gp.getSalvos());
+                                                    }})
+                                            .orElse(null)) ;
+
                                 }}).orElse(null), HttpStatus.OK);
             } else {
                 System.out.println("hey3");

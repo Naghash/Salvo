@@ -222,28 +222,21 @@ const newGame =()=>{
         credentials: "include",
     }).then(function (response) {
         if (response.ok) {
-            console.log("success")
-
             return response.json();
         }
     }).then(function (json) {
-        console.log("ok2")
           const  nuevoGame = json;
-        console.log(nuevoGame, "newgameJSON")
         const gpId = nuevoGame.gpId;
         location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
     }).catch(function(error) {
-        alert("Not logged in:" + error.message);
+        alert("Not logged in:" + "Please log in!");
     });
 
 }
 
  async function joinGame (id)  {
     try {
-        // var gameId = playerGames.games.map(game =>{ if(game.gameplayers.length ==1){
-        //      gameId=game.id;
-        //     console.log(message,1919)}
-        // });
+
         let response = await fetch(`http://localhost:8080/api/games/${id}/players`, {
             method: 'POST',
             credentials: 'include',

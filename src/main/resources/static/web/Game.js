@@ -4,7 +4,6 @@ var ships;
 var user;
 var salvos;
 var oponent;
-var oponentShips;
 var oponentSalvos;
 
 function dataCall () {
@@ -24,18 +23,20 @@ function dataCall () {
         user = games.gameplayer.player.name;
         salvos = games.gameplayer.salvos;
 
-        oponent = games.oponent.player.name;
-        oponentShips = games.oponent.ships;
-        oponentSalvos = games.oponent.salvos;
+        if (games.oponent!== null){
+            oponent = games.oponent.player.name;
+            oponentSalvos = games.oponent.salvos;
+        }else {
+            oponent = "Waiting for Player 2..."
+        }
 
         createTable(games);
         createShipLoc(ships);
         createTableSalvos(salvos);
         createSalvoLoc(salvos);
-        userNames(user);
-        userName2(oponent);
+        userNames(user,oponent);
         createSalvoOponent(oponentSalvos);
-        createOpShips(oponentShips)
+        // createOpShips(oponentShips)
 
     }).catch(function (error) {
         console.log("Request failed: " + error.message);
@@ -114,13 +115,13 @@ function createSalvoOponent() {
 })
 }
 
-function userNames(user) {
+function userNames(user, oponent){
     document.getElementById("player1").textContent = "Player 1:" + " " + user;
+if (oponent) {
+    document.getElementById("player2").textContent = "Player 2: " +  oponent;
+}else {
+    document.getElementById("player2").textContent = "Waiting for Player 2...";
 }
-function userName2(user2){
-
-    document.getElementById("player2").textContent = "Player 2:" + " " +  oponent;
-
 }
 
 
@@ -179,14 +180,14 @@ function createSalvoLoc() {
     })
 }
 
-function createOpShips(oponentShips) {
-
-    oponentShips.forEach(s => {
-        s.location.forEach(lo => {
-            document.getElementById("salvoLoc"+lo) != null
-                ? document.getElementById("salvoLoc"+lo).style.backgroundColor = "grey"
-                : null
-        })
-    })
-
-}
+// function createOpShips(oponentShips) {
+//
+//     oponentShips.forEach(s => {
+//         s.location.forEach(lo => {
+//             document.getElementById("salvoLoc"+lo) != null
+//                 ? document.getElementById("salvoLoc"+lo).style.backgroundColor = "grey"
+//                 : null
+//         })
+//     })
+//
+// }
