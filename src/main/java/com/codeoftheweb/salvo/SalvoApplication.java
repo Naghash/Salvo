@@ -51,10 +51,10 @@ public class SalvoApplication{
             Game game2 = new Game(nextTime);
             LocalDateTime nextTime1 = LocalDateTime.now().plusHours(2);
             Game game3 = new Game(nextTime1);
-            LocalDateTime nextTime3 = LocalDateTime.now().plusHours(3);
-            Game game4 = new Game(nextTime3);
-            LocalDateTime nextTime4 = LocalDateTime.now().plusHours(2);
-            Game game5 = new Game(nextTime4);
+//            LocalDateTime nextTime3 = LocalDateTime.now().plusHours(3);
+//            Game game4 = new Game(nextTime3);
+//            LocalDateTime nextTime4 = LocalDateTime.now().plusHours(2);
+//            Game game5 = new Game(nextTime4);
 
 
             Ship ship1 = new Ship(Arrays.asList("B5", "B6", "B7", "B8", "B9"), "Destroyer");
@@ -123,8 +123,8 @@ public class SalvoApplication{
             repositoryGame.save(game1);
             repositoryGame.save(game2);
             repositoryGame.save(game3);
-            repositoryGame.save(game4);
-            repositoryGame.save(game5);
+//            repositoryGame.save(game4);
+//            repositoryGame.save(game5);
 
             repositoryGamePlayer.save(gamePlayer1);
             repositoryGamePlayer.save(gamePlayer2);
