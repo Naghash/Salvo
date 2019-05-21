@@ -180,6 +180,34 @@ function createSalvoLoc() {
     })
 }
 
+async function postShips ()  {
+    try {
+
+        let response = await fetch(`http://localhost:8080/api/games/players/${7}/ships`, {
+            method: 'POST',
+            credentials:'include',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept':'application/json'
+            },
+
+            body: JSON.stringify([{  location: ["h2","h1","h3"], typeOfShip: "Destroyer" }]),
+
+        });
+        const message = await response.json();
+        console.log(message,2020)
+        if (response.status === 201) {
+
+            alert("good my boy")
+        } else if (response.status === 403) {
+        } else{
+            alert("Something went wrong, try again later");
+        }
+    } catch (error) {
+        console.log("Error: ", error)
+    }
+}
+
 // function createOpShips(oponentShips) {
 //
 //     oponentShips.forEach(s => {

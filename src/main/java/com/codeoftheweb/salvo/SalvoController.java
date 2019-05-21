@@ -5,17 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import static java.util.stream.Collectors.toList;
 
 @RestController()
@@ -24,6 +21,13 @@ public class SalvoController {
 
     @Autowired
     private GameRepository repositoryGame;
+    @Autowired
+    private GamePlayerRepository repositoryGamePlayer;
+    @Autowired
+    private ShipRepository repositoryShip;
+    @Autowired
+    private PlayerRepository repositoryPlayer;
+
     @RequestMapping("/games")
     public Map<String, Object> getAuth(Authentication authentication) {
         return new LinkedHashMap<String, Object>(){{
@@ -55,8 +59,7 @@ public class SalvoController {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
 
-    @Autowired
-    private GamePlayerRepository repositoryGamePlayer;
+
     @RequestMapping("/game_view/{gamePlayerId}")
 
     private ResponseEntity<Map<String, Object>> makeDTO( @PathVariable Long gamePlayerId, Authentication authentication) {
@@ -125,8 +128,7 @@ public class SalvoController {
     }
 
 
-    @Autowired
-    private PlayerRepository repositoryPlayer;
+
     @RequestMapping(path = "/players", method = RequestMethod.POST)
     public ResponseEntity<Object> register(
             @RequestParam String userName, @RequestParam String password) {
@@ -217,7 +219,52 @@ public class SalvoController {
 
             }
 
+
+    @RequestMapping(path = "/games/players/{gpId}/ships", method = RequestMethod.POST)
+    public ResponseEntity <Map<String, Object>> addShips( @PathVariable Long gpId, @RequestBody List <Ship> ships, Authentication authentication){
+
+        Optional<GamePlayer> gamePlayer = repositoryGamePlayer.findById(gpId);
+
+        if (authentication == null) {
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                put("error", "Please, Log in!");
+            }} , HttpStatus.UNAUTHORIZED);
+        }
+        if (!gamePlayer.isPresent()) {
+            System.out.println("its ok 2");
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>(){{
+                put("error", "GamePlayer does not exist!");
+            }} , HttpStatus.UNAUTHORIZED);
+        }
+
+        if (gamePlayer.get().getShips().size()!= 0) {
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>() {{
+                System.out.println("ships size");
+
+                put("error", "You already have ships placed!");
+            }}, HttpStatus.FORBIDDEN);
+        }
+        Player  player = repositoryPlayer.findByUserName(authentication.getName());
+
+        if (gamePlayer.get().getPlayer().getId() != player.getId()){
+            return new ResponseEntity<>(new LinkedHashMap<String, Object>() {{
+                System.out.println("not your game");
+                put("error", "It is not your game!");
+            }}, HttpStatus.FORBIDDEN);
+        }
+
+        Map<String, Object> shipsAdded = new LinkedHashMap<>();
+        ships.forEach(ship -> {
+            gamePlayer.get().addShip(ship);
+            repositoryShip.save(ship);
+        });
+
+        shipsAdded.put("game", gamePlayer.get().getGame());
+        System.out.println("ships done");
+        return new ResponseEntity<>(shipsAdded, HttpStatus.CREATED);
+
     }
+}
 
 
 
