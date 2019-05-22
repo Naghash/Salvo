@@ -83,12 +83,49 @@ function createTable(games){
 
             let td2 = document.createElement("td");
             trLet.appendChild(td2);
-            td2.id = `${"ship" + tableLetters[i]}${tableNumbers[j]}`;
+            td2.id = `ship${tableLetters[i]}${tableNumbers[j]}`;
+
+            var drag = document.getElementById("carrier");
+            var drop = document.getElementById(`ship${tableLetters[i]}${tableNumbers[j]}`);
+
+            drag.addEventListener("dragstart", function(event) {
+                event.dataTransfer.setData("Text", event.target.id);
+            });
+
+            // drag.addEventListener("drag", function(event) {
+            //     document.getElementById("demo").innerHTML = "The p element is being dragged.";
+            // });
+
+            drop.addEventListener("dragover", function(event) {
+                event.preventDefault();
+            });
+
+            drop.addEventListener("drop", function(event) {
+                event.preventDefault();
+                var data = event.dataTransfer.getData("Text");
+                event.target.appendChild(document.getElementById(data));
+            });
+
 
 
         }
     }
 }
+
+
+// function allowDrop(ev) {
+//     ev.preventDefault();
+// }
+//
+// function drag(ev) {
+//     ev.dataTransfer.setData("text", ev.target.id);
+// }
+// function drop(ev) {
+//     ev.preventDefault();
+//     var data = ev.dataTransfer.getData("text");
+//     ev.target.appendChild(document.getElementById(data));
+// }
+
 
 function createShipLoc() {
 
@@ -182,8 +219,8 @@ function createSalvoLoc() {
 
 async function postShips ()  {
     try {
-
-        let response = await fetch(`http://localhost:8080/api/games/players/${7}/ships`, {
+        const gpId = games.gameplayer.id;
+        let response = await fetch(`http://localhost:8080/api/games/players/${gpId}/ships`, {
             method: 'POST',
             credentials:'include',
             headers:{
@@ -191,14 +228,15 @@ async function postShips ()  {
                 'Accept':'application/json'
             },
 
-            body: JSON.stringify([{  location: ["h2","h1","h3"], typeOfShip: "Destroyer" }]),
+            body: JSON.stringify([{  location: ["H1","H2","H3"], typeOfShip: "Destroyer" }]),
 
         });
         const message = await response.json();
+        console.log(gpId,78)
         console.log(message,2020)
         if (response.status === 201) {
 
-            alert("good my boy")
+            window.location.href = `http://localhost:8080/web/game.html?gp=${gpId}`;
         } else if (response.status === 403) {
         } else{
             alert("Something went wrong, try again later");
@@ -207,6 +245,7 @@ async function postShips ()  {
         console.log("Error: ", error)
     }
 }
+
 
 // function createOpShips(oponentShips) {
 //

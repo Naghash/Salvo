@@ -259,8 +259,7 @@ public class SalvoController {
             repositoryShip.save(ship);
         });
 
-        shipsAdded.put("game", gamePlayer.get().getGame());
-        System.out.println("ships done");
+        shipsAdded.put("games", gamePlayer.get().getGame());
         return new ResponseEntity<>(shipsAdded, HttpStatus.CREATED);
 
     }

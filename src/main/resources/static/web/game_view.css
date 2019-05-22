@@ -3,7 +3,7 @@
     height: 450px;
 }
 .table1 td{
-    border: 2px solid darkblue;
+    border: 1px solid darkblue;
     width: 45px;
 }
 
@@ -11,4 +11,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+#carrier{
+    width: 42px;
+    height: 36px;
+    background-color: darkgreen;
 }
