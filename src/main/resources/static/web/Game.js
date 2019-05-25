@@ -85,20 +85,20 @@ function createTable(games){
             trLet.appendChild(td2);
             td2.id = `ship${tableLetters[i]}${tableNumbers[j]}`;
 
+
             var drag = document.getElementById("carrier");
             var drop = document.getElementById(`ship${tableLetters[i]}${tableNumbers[j]}`);
 
             drag.addEventListener("dragstart", function(event) {
                 event.dataTransfer.setData("Text", event.target.id);
+                console.log(event.target.id,1010)
             });
-
-            // drag.addEventListener("drag", function(event) {
-            //     document.getElementById("demo").innerHTML = "The p element is being dragged.";
-            // });
 
             drop.addEventListener("dragover", function(event) {
                 event.preventDefault();
             });
+            console.log(ondrop,4646)
+            carrier = document.getElementById("carrier").style.width = "196px";
 
             drop.addEventListener("drop", function(event) {
                 event.preventDefault();
@@ -106,6 +106,7 @@ function createTable(games){
                 event.target.appendChild(document.getElementById(data));
             });
 
+            // carrier==true;
 
 
         }
