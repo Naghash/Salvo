@@ -1,6 +1,36 @@
+#tableGame{
+    border: black solid 2px;
+    width: 500px;
+    height: 483px;
+}
 .table1 {
     width: 450px;
     height: 450px;
+}
+.numbers{
+    display: flex;
+    flex-direction: row;
+}
+.numbers div, .letters{
+    width: 44px;
+    height: 42px;
+    border: 1px solid #9E9E9E;
+}
+.shipsGrids{
+    display: flex;
+    flex-direction: row;
+    background-color: #e7e9ea;;
+}
+#patrol{
+    width: 44px;
+    height: 42px;
+    border: 1px solid #9E9E9E;
+    background-color: darkgreen;
+}
+#carrier{
+    width: 220px;
+    height: 42px;
+    background-color: darkgreen;
 }
 .table1 td{
     border: 1px solid darkblue;
@@ -12,8 +42,4 @@
     flex-direction: row;
     justify-content: space-evenly;
 }
-#carrier{
-    /*width: 202px;*/
-    /*height: 25px;*/
-    background-color: darkgreen;
-}
+

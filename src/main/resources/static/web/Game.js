@@ -1,4 +1,3 @@
-
 var games;
 var ships;
 var user;
@@ -50,82 +49,65 @@ function createTable(games){
     var tableNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var tableLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
-    var table = document.getElementById("tableGame");
-    var header = document.createElement("thead");
-    table.appendChild(header);
+    var tableGame = document.getElementById("tableGame");
 
-    var tbody = document.createElement("tbody");
-    table.appendChild(tbody);
 
-    var trNumbs = document.createElement("tr");
-    tbody.appendChild(trNumbs);
+    var trNumbs = document.createElement("div");
+    tableGame.appendChild(trNumbs);
+    trNumbs.className = "numbers";
 
-    trNumbs.appendChild(document.createElement("td"));
+    trNumbs.appendChild(document.createElement("div"));
 
     tableNumbers.forEach(number => {
-        const td = document.createElement("td");
-    trNumbs.appendChild(td)
-    td.textContent = number;
-
-});
+        const td = document.createElement("div");
+        trNumbs.appendChild(td)
+        td.textContent = number;
+    });
 
 
 
     for (let i = 0; i < tableLetters.length; i++) {
-        var trLet = document.createElement("tr");
-        tbody.appendChild(trLet);
+        var trLet = document.createElement("div");
+        tableGame.appendChild(trLet);
 
-        let td = document.createElement("td");
+        let td = document.createElement("div");
         trLet.appendChild(td);
+        trLet.className = "numbers"
+        td.className = "letters"
         td.textContent = tableLetters[i];
 
         for (let j = 0; j < tableNumbers.length; j++) {
 
-            let td2 = document.createElement("td");
+            let td2 = document.createElement("div");
             trLet.appendChild(td2);
             td2.id = `ship${tableLetters[i]}${tableNumbers[j]}`;
+            td2.className = "shipsGrids"
 
 
             var drag = document.getElementById("carrier");
+            var drag1 = document.getElementById("patrol");
+
             var drop = document.getElementById(`ship${tableLetters[i]}${tableNumbers[j]}`);
 
             drag.addEventListener("dragstart", function(event) {
                 event.dataTransfer.setData("Text", event.target.id);
                 console.log(event.target.id,1010)
             });
-
             drop.addEventListener("dragover", function(event) {
                 event.preventDefault();
             });
-            console.log(ondrop,4646)
-            carrier = document.getElementById("carrier").style.width = "196px";
-
             drop.addEventListener("drop", function(event) {
                 event.preventDefault();
                 var data = event.dataTransfer.getData("Text");
                 event.target.appendChild(document.getElementById(data));
+                console.log(data,1111)
+                console.log(event,12)
+                console.log(event.target, 1313)
             });
-
-            // carrier==true;
-
 
         }
     }
 }
-
-
-// function allowDrop(ev) {
-//     ev.preventDefault();
-// }
-//
-// function drag(ev) {
-//     ev.dataTransfer.setData("text", ev.target.id);
-// }
-// function drop(ev) {
-//     ev.preventDefault();
-//     var data = ev.dataTransfer.getData("text");
-//     ev.target.appendChild(document.getElementById(data));
-// }
 
 
 function createShipLoc() {
@@ -133,8 +115,8 @@ function createShipLoc() {
     ships.forEach(sh => {
         sh.location.forEach(location => {
             document.getElementById("ship" + location).id = "shipLoc" + location;
-        document.getElementById("shipLoc"+ location).style.backgroundColor = "green"
-    })
+            document.getElementById("shipLoc"+ location).style.backgroundColor = "green"
+        })
     })
 }
 
@@ -142,24 +124,24 @@ function createSalvoOponent() {
 
     oponentSalvos.forEach(sal => {
         sal.location.forEach(loc =>{
-      if  (document.getElementById("shipLoc"+loc) != null){
-            document.getElementById("shipLoc"+loc).style.backgroundColor = "grey"
-          document.getElementById("shipLoc"+loc).innerHTML = sal.turn;
+            if  (document.getElementById("shipLoc"+loc) != null){
+                document.getElementById("shipLoc"+loc).style.backgroundColor = "grey"
+                document.getElementById("shipLoc"+loc).innerHTML = sal.turn;
 
-      }
+            }
+        })
+
+
     })
-
-
-})
 }
 
 function userNames(user, oponent){
     document.getElementById("player1").textContent = "Player 1:" + " " + user;
-if (oponent) {
-    document.getElementById("player2").textContent = "Player 2: " +  oponent;
-}else {
-    document.getElementById("player2").textContent = "Waiting for Player 2...";
-}
+    if (oponent) {
+        document.getElementById("player2").textContent = "Player 2: " +  oponent;
+    }else {
+        document.getElementById("player2").textContent = "Waiting for Player 2...";
+    }
 }
 
 
@@ -210,11 +192,11 @@ function createSalvoLoc() {
 
     salvos.forEach(sal => {
         sal.location.forEach(loc => {
-            document.getElementById("salvo" + loc).id = "salvoLoc" + loc;
-            document.getElementById("salvoLoc"+ loc).style.backgroundColor = "red"
+                document.getElementById("salvo" + loc).id = "salvoLoc" + loc;
+                document.getElementById("salvoLoc"+ loc).style.backgroundColor = "red"
                 document.getElementById("salvoLoc"+ loc).innerHTML = sal.turn;
             }
-             )
+        )
     })
 }
 
