@@ -4,6 +4,7 @@ var user;
 var salvos;
 var oponent;
 var oponentSalvos;
+let myShipsOnTable = {};
 
 function dataCall () {
 
@@ -91,50 +92,45 @@ function createTable(games){
 
             drag.addEventListener("dragstart", function(event) {
                 event.dataTransfer.setData("Text", event.target.id);
+                console.log(event.target.id,555)
 
             });
 
             drop.addEventListener("dragover", function(event) {
                 event.preventDefault();
             });
-            const placedShips = [];
 
             drop.addEventListener("drop", function(event) {
                 event.preventDefault();
                 var data = event.dataTransfer.getData("Text");
                 event.target.appendChild(document.getElementById(data));
 
-                const shipLength = 5;
+                const shipLength = 3;
                 const gridId = event.target.id;
-                const shipPosition = []
-                let myShip = null;
-                let myPosition = "";
+                let myShip = data;
                 let shipPos = [];
 
-
-                let myLetter = gridId.slice(0, 1)
-                let myNumber = gridId.slice(1)
-
-                myPosition = tableLetters.indexOf(myLetter);
-
-                for (let i=0; i < shipLength +1; i++){
-                    shipPos = (tableLetters.slice(myPosition, (myPosition + i)))
-                    shipPos = shipPos.map(pos => pos + myNumber)
+                if (Object.keys(myShipsOnTable).includes(myShip)) {
+                    myShipsOnTable[myShip].forEach(pos => document.getElementById("ship" + pos).style.backgroundColor = "red")
                 }
-                console.log(shipPos)
-                // letterSh.push(gridId.charAt(0))
-                // numberSh.push(Number(gridId.charAt(1)))
-                //     var ship = event.target;
-                //    const nextGrid = ship.nextSibling;
-                // if (nextGrid != null) {
-                //             for (let x= 0; x < 5; x++) {
-                //                 placedShips.push(ship.id)
-                //                 ship.nextSibling.style.backgroundColor = "green";
-                //
-                //                 console.log(nextGrid,10)
 
+                let myLetter = gridId.slice(0, 1);
+                let myNumber = Number(gridId.slice(1));
 
-
+                // myPosition = tableLetters.indexOf(myLetter);
+                console.log(myNumber, shipLength)
+                if(myNumber + shipLength < 12){
+                    shipPos = tableNumbers.slice(myNumber - 1, (myNumber + shipLength - 1));
+                 }else
+                     {
+                         shipPos = tableNumbers.slice(-shipLength);
+                     }
+                shipPos = shipPos.map(pos =>  myLetter+pos);
+                shipPos.map(ship =>{ document.getElementById(ship).id= "ship" + ship;
+                document.getElementById("ship" + ship).style.backgroundColor ="green"
+                });
+                myShipsOnTable[myShip] = shipPos;
+console.log(event.target.id, 858585)
             });
 
         }
