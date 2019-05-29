@@ -80,29 +80,61 @@ function createTable(games){
 
             let td2 = document.createElement("div");
             trLet.appendChild(td2);
-            td2.id = `ship${tableLetters[i]}${tableNumbers[j]}`;
+            td2.id = `${tableLetters[i]}${tableNumbers[j]}`;
             td2.className = "shipsGrids"
 
 
             var drag = document.getElementById("carrier");
             var drag1 = document.getElementById("patrol");
 
-            var drop = document.getElementById(`ship${tableLetters[i]}${tableNumbers[j]}`);
+            var drop = document.getElementById(`${tableLetters[i]}${tableNumbers[j]}`);
 
             drag.addEventListener("dragstart", function(event) {
                 event.dataTransfer.setData("Text", event.target.id);
-                console.log(event.target.id,1010)
+
             });
+
             drop.addEventListener("dragover", function(event) {
                 event.preventDefault();
             });
+            const placedShips = [];
+
             drop.addEventListener("drop", function(event) {
                 event.preventDefault();
                 var data = event.dataTransfer.getData("Text");
                 event.target.appendChild(document.getElementById(data));
-                console.log(data,1111)
-                console.log(event,12)
-                console.log(event.target, 1313)
+
+                const shipLength = 5;
+                const gridId = event.target.id;
+                const shipPosition = []
+                let myShip = null;
+                let myPosition = "";
+                let shipPos = [];
+
+
+                let myLetter = gridId.slice(0, 1)
+                let myNumber = gridId.slice(1)
+
+                myPosition = tableLetters.indexOf(myLetter);
+
+                for (let i=0; i < shipLength +1; i++){
+                    shipPos = (tableLetters.slice(myPosition, (myPosition + i)))
+                    shipPos = shipPos.map(pos => pos + myNumber)
+                }
+                console.log(shipPos)
+                // letterSh.push(gridId.charAt(0))
+                // numberSh.push(Number(gridId.charAt(1)))
+                //     var ship = event.target;
+                //    const nextGrid = ship.nextSibling;
+                // if (nextGrid != null) {
+                //             for (let x= 0; x < 5; x++) {
+                //                 placedShips.push(ship.id)
+                //                 ship.nextSibling.style.backgroundColor = "green";
+                //
+                //                 console.log(nextGrid,10)
+
+
+
             });
 
         }
@@ -114,7 +146,7 @@ function createShipLoc() {
 
     ships.forEach(sh => {
         sh.location.forEach(location => {
-            document.getElementById("ship" + location).id = "shipLoc" + location;
+            document.getElementById(location).id = "shipLoc" + location;
             document.getElementById("shipLoc"+ location).style.backgroundColor = "green"
         })
     })

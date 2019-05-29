@@ -1,5 +1,5 @@
 #tableGame{
-    border: black solid 2px;
+    border: black solid 1px;
     width: 500px;
     height: 483px;
 }
@@ -24,13 +24,12 @@
 #patrol{
     width: 44px;
     height: 42px;
-    border: 1px solid #9E9E9E;
-    background-color: darkgreen;
+    background-color: green;
 }
 #carrier{
     width: 220px;
     height: 42px;
-    background-color: darkgreen;
+    background-color: green;
 }
 .table1 td{
     border: 1px solid darkblue;
