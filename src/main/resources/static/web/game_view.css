@@ -21,15 +21,28 @@
     flex-direction: row;
     background-color: #e7e9ea;;
 }
-#patrol{
-    width: 44px;
-    height: 42px;
-    background-color: green;
-}
+
 #carrier{
     width: 220px;
     height: 42px;
-    background-color: green;
+    background-image: url("carrier.png")}
+#battleship{
+    width: 176px;
+    height: 42px;
+    background-image: url("battleship.png")}
+#submarine{
+    width: 132px;
+    height: 42px;
+    background-image: url("submarine.png");
+}
+#destroyer{
+    width: 132px;
+    height: 42px;
+    background-image: url("destroyer.png");}
+#patrol{
+    width: 88px;
+    height: 42px;
+    background-image: url("patrol.png");
 }
 .table1 td{
     border: 1px solid darkblue;
@@ -41,4 +54,16 @@
     flex-direction: row;
     justify-content: space-evenly;
 }
-
+.vertical {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.horizontal {
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+#rotateText{
+    display: none;
+}

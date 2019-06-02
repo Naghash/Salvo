@@ -5,6 +5,8 @@ var salvos;
 var oponent;
 var oponentSalvos;
 let myShipsOnTable = {};
+var shipLenght;
+
 
 function dataCall () {
 
@@ -36,8 +38,6 @@ function dataCall () {
         createSalvoLoc(salvos);
         userNames(user,oponent);
         createSalvoOponent(oponentSalvos);
-        // createOpShips(oponentShips)
-
     }).catch(function (error) {
         console.log("Request failed: " + error.message);
     });
@@ -51,12 +51,10 @@ function createTable(games){
     var tableLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
     var tableGame = document.getElementById("tableGame");
-
-
     var trNumbs = document.createElement("div");
+
     tableGame.appendChild(trNumbs);
     trNumbs.className = "numbers";
-
     trNumbs.appendChild(document.createElement("div"));
 
     tableNumbers.forEach(number => {
@@ -64,7 +62,6 @@ function createTable(games){
         trNumbs.appendChild(td)
         td.textContent = number;
     });
-
 
 
     for (let i = 0; i < tableLetters.length; i++) {
@@ -84,57 +81,117 @@ function createTable(games){
             td2.id = `${tableLetters[i]}${tableNumbers[j]}`;
             td2.className = "shipsGrids"
 
+            var drag;
+            // var drSh = document.getElementById("carrier")
+            const drSh = document.getElementById("ships");
 
-            var drag = document.getElementById("carrier");
-            var drag1 = document.getElementById("patrol");
+                drSh.addEventListener("mouseover", function (ev) {
+                    var shipID = ev.target.id;
 
-            var drop = document.getElementById(`${tableLetters[i]}${tableNumbers[j]}`);
 
-            drag.addEventListener("dragstart", function(event) {
-                event.dataTransfer.setData("Text", event.target.id);
-                console.log(event.target.id,555)
+                    if (shipID === "carrier") {
+                        shipLenght = 5;
+                        drag = document.getElementById("carrier");
+                        console.log(5)
+                    }
+                    if (shipID === "battleship") {
+                        drag = document.getElementById("battleship");
+                        shipLenght = 4;
+                        console.log(4)
+                    }
+                    if (shipID === "submarine") {
+                        drag = document.getElementById("submarine");
+                        shipLenght = 3;
+                        console.log(3)
+                    }
+                    if (shipID === "destroyer") {
+                        drag = document.getElementById("destroyer");
+                        shipLenght = 3;
+                    }
+                    if (shipID === "patrol") {
+                        drag = document.getElementById("patrol");
+                        shipLenght = 2;
 
-            });
+                    }
 
-            drop.addEventListener("dragover", function(event) {
-                event.preventDefault();
-            });
 
-            drop.addEventListener("drop", function(event) {
-                event.preventDefault();
-                var data = event.dataTransfer.getData("Text");
-                event.target.appendChild(document.getElementById(data));
+                    var drop = document.getElementById(`${tableLetters[i]}${tableNumbers[j]}`);
 
-                const shipLength = 3;
-                const gridId = event.target.id;
-                let myShip = data;
-                let shipPos = [];
+                    drag.addEventListener("dragstart", function (event) {
+                        event.dataTransfer.setData("Text", event.target.id);
+                    });
 
-                if (Object.keys(myShipsOnTable).includes(myShip)) {
-                    myShipsOnTable[myShip].forEach(pos => document.getElementById("ship" + pos).style.backgroundColor = "red")
-                }
+                    drop.addEventListener("dragover", function (event) {
+                        event.preventDefault();
+                    });
 
-                let myLetter = gridId.slice(0, 1);
-                let myNumber = Number(gridId.slice(1));
+                    drop.addEventListener("drop", function (event) {
+                        var data = event.dataTransfer.getData("Text");
+                        event.target.appendChild(document.getElementById(data));
 
-                // myPosition = tableLetters.indexOf(myLetter);
-                console.log(myNumber, shipLength)
-                if(myNumber + shipLength < 12){
-                    shipPos = tableNumbers.slice(myNumber - 1, (myNumber + shipLength - 1));
-                 }else
-                     {
-                         shipPos = tableNumbers.slice(-shipLength);
-                     }
-                shipPos = shipPos.map(pos =>  myLetter+pos);
-                shipPos.map(ship =>{ document.getElementById(ship).id= "ship" + ship;
-                document.getElementById("ship" + ship).style.backgroundColor ="green"
+                        const gridId = event.target.id;
+                        let myShip = data;
+                        let shipPos = [];
+
+                        let myLetter = gridId.slice(0, 1);
+                        let myNumber = Number(gridId.slice(1));
+
+                        // myPosition = tableLetters.indexOf(myLetter);
+                        if (myNumber + shipLenght < 12) {
+                            shipPos = tableNumbers.slice(myNumber - 1, (myNumber + shipLenght - 1));
+                        } else {
+                            shipPos = tableNumbers.slice(-shipLenght);
+                        }
+
+                        shipPos = shipPos.map(pos => myLetter + pos);
+
+
+
+                        // if (Object.keys(myShipsOnTable).includes(myShip)) {
+                        //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "red")
+                        // }
+                        console.log(myShip,4878)
+                        shipPos.forEach(ship => document.getElementById(ship).style.backgroundColor = "green");
+
+                        if (Object.values(myShipsOnTable).flat().some(pos => shipPos.includes(pos))) {
+                            myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "blue")
+                        }
+                        myShipsOnTable[myShip] = shipPos;
+
+                    });
+
                 });
-                myShipsOnTable[myShip] = shipPos;
-console.log(event.target.id, 858585)
-            });
 
-        }
+
+
+            }
+
     }
+}
+        const rotateText =()=>{
+            var shipsRot = document.getElementById("patrol");
+                shipsRot.addEventListener("mouseenter", function (ev) {
+                document.getElementById("rotateText").style.display ="block"
+                });
+            if (shipsRot.className === "vertical") {
+                document.getElementById("rotateText").style.display ="none"
+            }
+
+}
+rotateText();
+
+function rotateShips() {
+    var shipsRot = document.getElementById("patrol");
+    shipsRot.addEventListener("mouseenter", function (ev) {
+        document.getElementById("rotateText").style.display ="flex"
+    })
+    if (shipsRot.className === "horizontal") {
+        shipsRot.className = "vertical";
+    }
+    else if ( shipsRot.className === "vertical") {
+        shipsRot.className = "horizontal";
+    }
+
 }
 
 

@@ -10,21 +10,21 @@
 <h2>Game</h2>
 <div class="container">
     <div id="ships">
-        <div id="carrier" draggable="true">
-        </div>
-        <div id="battleship" draggable="true">
-            <p>Battleship </p>
-        </div>
-        <div id="submarine" draggable="true">
-            <p>Submarine </p>
-        </div>
-        <div id="destroyer" draggable="true" >
-            <p>Destroyer</p>
-        </div>
-        <div id="patrol" draggable="true">
-            <p>Patrol Boat</p>
-        </div>
 
+        <p id="rotateText">Double click to rotate!</p>
+        <div id="carrier" class="horizontal" alt="carrier" ondblclick="rotateShips()" draggable="true">
+        </div>
+        <div id="battleship" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
+
+        </div>
+        <div id="submarine" class="horizontal" draggable="true">
+
+        </div>
+        <div id="destroyer" class="horizontal" draggable="true" >
+
+        </div>
+        <div id="patrol" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
+        </div>
         <button onclick="postShips()">Ships</button>
     </div>
 
