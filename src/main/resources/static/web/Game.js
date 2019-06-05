@@ -144,9 +144,6 @@ function createTable(games){
                         }
 
                         shipPos = shipPos.map(pos => myLetter + pos);
-
-
-
                         // if (Object.keys(myShipsOnTable).includes(myShip)) {
                         //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "red")
                         // }
@@ -157,34 +154,25 @@ function createTable(games){
                             myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "blue")
                         }
                         myShipsOnTable[myShip] = shipPos;
-
+console.log(myShipsOnTable,1111)
                     });
 
                 });
-
-
-
             }
-
     }
 }
-        const rotateText =()=>{
-            var shipsRot = document.getElementById("patrol");
-                shipsRot.addEventListener("mouseenter", function (ev) {
-                document.getElementById("rotateText").style.display ="block"
-                });
-            if (shipsRot.className === "vertical") {
-                document.getElementById("rotateText").style.display ="none"
-            }
+const showRotateText =()=>{
+    document.getElementById("rotateText").style.visibility ="visible"
+
+};
+const hideRotateText=()=>{
+    document.getElementById("rotateText").style.visibility ="hidden"
 
 }
-rotateText();
 
 function rotateShips() {
     var shipsRot = document.getElementById("patrol");
-    shipsRot.addEventListener("mouseenter", function (ev) {
-        document.getElementById("rotateText").style.display ="flex"
-    })
+
     if (shipsRot.className === "horizontal") {
         shipsRot.className = "vertical";
     }
@@ -325,4 +313,4 @@ async function postShips ()  {
 //         })
 //     })
 //
-// }
+// }15UB129

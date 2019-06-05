@@ -63,14 +63,11 @@ public class SalvoController {
     @RequestMapping("/game_view/{gamePlayerId}")
 
     private ResponseEntity<Map<String, Object>> makeDTO( @PathVariable Long gamePlayerId, Authentication authentication) {
-
         Optional<GamePlayer> gameP = repositoryGamePlayer.findById(gamePlayerId);
-
         if (gameP.isPresent() && authentication.getName() != null) {
             System.out.println("hey1");
             long playerID = gameP.get().getPlayer().getId();
             long userID = repositoryPlayer.findByUserName(authentication.getName()).getId();
-
             if (playerID == userID) {
                 System.out.println("hey2");
                 return new ResponseEntity<>(repositoryGamePlayer.findById(gamePlayerId)

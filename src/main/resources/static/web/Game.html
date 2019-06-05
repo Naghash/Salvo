@@ -7,9 +7,8 @@
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 </head>
 <body>
-<h2>Game</h2>
 <div class="container">
-    <div id="ships">
+    <div id="ships" onmouseenter="showRotateText()" onmouseleave="hideRotateText()">
 
         <p id="rotateText">Double click to rotate!</p>
         <div id="carrier" class="horizontal" alt="carrier" ondblclick="rotateShips()" draggable="true">
@@ -43,6 +42,7 @@
         <table id="tableSalvos" class="table1" >
 
         </table>
+        <button>Fire!</button>
     </div>
 </div>
 </body>
