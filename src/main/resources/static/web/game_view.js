@@ -123,6 +123,11 @@ function createTable(games){
 
                     drop.addEventListener("dragover", function (event) {
                         event.preventDefault();
+
+                      if ( Object.values(myShipsOnTable).flat().some(pos => event.target.id.includes(pos))) {
+                            console.log("hey")
+                          event.target.style.backgroundColor= "red"
+                        }
                     });
 
                     drop.addEventListener("drop", function (event) {
@@ -147,14 +152,16 @@ function createTable(games){
                         // if (Object.keys(myShipsOnTable).includes(myShip)) {
                         //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "red")
                         // }
-                        console.log(myShip,4878)
-                        shipPos.forEach(ship => document.getElementById(ship).style.backgroundColor = "green");
+                        // shipPos.forEach(ship => document.getElementById(ship).style.backgroundColor = "green");
 
-                        if (Object.values(myShipsOnTable).flat().some(pos => shipPos.includes(pos))) {
-                            myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "blue")
-                        }
+                        // if (Object.values(myShipsOnTable).flat().some(pos => shipPos.includes(pos))) {
+                        //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "blue")
+                        // }
                         myShipsOnTable[myShip] = shipPos;
-console.log(myShipsOnTable,1111)
+                        console.log(myShip, "myShip", shipPos, "myShipPos", 11)
+                        console.log("object values",Object.values(myShipsOnTable), "Object keys", Object.keys(myShipsOnTable),55)
+                        console.log(shipPos.values(),112222)
+
                     });
 
                 });
@@ -181,7 +188,6 @@ function rotateShips() {
     }
 
 }
-
 
 function createShipLoc() {
 
@@ -292,7 +298,7 @@ async function postShips ()  {
         console.log(message,2020)
         if (response.status === 201) {
 
-            window.location.href = `http://localhost:8080/web/game.html?gp=${gpId}`;
+            window.location.href = `http://localhost:8080/web/game_view.html?gp=${gpId}`;
         } else if (response.status === 403) {
         } else{
             alert("Something went wrong, try again later");

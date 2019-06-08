@@ -71,7 +71,7 @@ function createList(playerGames) {
                                  <td> ${game.id}</td>
                                  <td>${game.created}</td>
                                  <td>${game.gameplayers[0].player.name} vs ${game.gameplayers[1].player.name}</td>
-                                <td><button> <a href="game.html?gp=${gameContainsLogPlayer.id}"><b>Go to Game</b></a></button></td>
+                                <td><button> <a href="game_view.html?gp=${gameContainsLogPlayer.id}"><b>Go to Game</b></a></button></td>
                               </tr>`
             }
             if (!gameContainsLogPlayer && game.gameplayers.length === 1) {
@@ -87,7 +87,7 @@ function createList(playerGames) {
                                         <td>${game.id}</td>
                                         <td>${game.created}</td>
                                         <td>${game.gameplayers[0].player.name}</td>
-                                        <td><button> <a href="game.html?gp=${gameContainsLogPlayer.id}"><b>Go to Game</b></a></button></td>
+                                        <td><button> <a href="game_view.html?gp=${gameContainsLogPlayer.id}"><b>Go to Game</b></a></button></td>
                                     </tr>`
             }
 
@@ -227,7 +227,7 @@ const newGame =()=>{
     }).then(function (json) {
           const  nuevoGame = json;
         const gpId = nuevoGame.gpId;
-        location.href = `http://localhost:8080/web/game.html?gp=${gpId}`
+        location.href = `http://localhost:8080/web/game_view.html?gp=${gpId}`
     }).catch(function(error) {
         alert("Not logged in:" + "Please log in!");
     });
@@ -245,7 +245,7 @@ const newGame =()=>{
         console.log(message,2020)
         if (response.status === 201) {
 
-            window.location.href = `http://localhost:8080/web/game.html?gp=${message.gpId}`;
+            window.location.href = `http://localhost:8080/web/game_view.html?gp=${message.gpId}`;
         } else if (response.status === 403) {
             alert("you suck")
         } else{

@@ -185,7 +185,7 @@ public class SalvoApplication{
         protected void configure(HttpSecurity http) throws Exception {
 
             http.authorizeRequests()
-                    .antMatchers("/web/game.html/**",
+                    .antMatchers("/web/game_view.html/**",
                             "/web/games.html").permitAll();
 
             http.formLogin()
