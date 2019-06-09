@@ -11,18 +11,23 @@
     <div id="ships" onmouseenter="showRotateText()" onmouseleave="hideRotateText()">
 
         <p id="rotateText">Double click to rotate!</p>
-        <div id="carrier" class="horizontal" alt="carrier" ondblclick="rotateShips()" draggable="true">
+        <div>
+            <img src="carrier.png" id="carrier" class="horizontal" alt="carrier" ondblclick="rotateShips()" draggable="true">
         </div>
-        <div id="battleship" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
+        <div>
+            <img src="battleship.png" id="battleship" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
 
         </div>
-        <div id="submarine" class="horizontal" draggable="true">
+        <div>
+            <img src="submarine.png" id="submarine" alt="submarine" class="horizontal" draggable="true">
 
         </div>
-        <div id="destroyer" class="horizontal" draggable="true" >
+        <div>
+            <img src="destroyer.png" id="destroyer" alt="destroyer" class="horizontal" draggable="true" >
 
         </div>
-        <div id="patrol" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
+        <div>
+            <img src="patrol.png" id="patrol" class="horizontal" alt="patrol" ondblclick="rotateShips()" draggable="true">
         </div>
         <button onclick="postShips()">Ships</button>
     </div>

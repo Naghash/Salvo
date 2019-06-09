@@ -83,42 +83,15 @@ function createTable(games){
 
             var drag;
             // var drSh = document.getElementById("carrier")
-            const drSh = document.getElementById("ships");
+          let  dragSHips = document.getElementById("ships");
+          dragSHips.addEventListener("mouseover", function (ev) {
 
-                drSh.addEventListener("mouseover", function (ev) {
-                    var shipID = ev.target.id;
-
-
-                    if (shipID === "carrier") {
-                        shipLenght = 5;
-                        drag = document.getElementById("carrier");
-                        console.log(5)
-                    }
-                    if (shipID === "battleship") {
-                        drag = document.getElementById("battleship");
-                        shipLenght = 4;
-                        console.log(4)
-                    }
-                    if (shipID === "submarine") {
-                        drag = document.getElementById("submarine");
-                        shipLenght = 3;
-                        console.log(3)
-                    }
-                    if (shipID === "destroyer") {
-                        drag = document.getElementById("destroyer");
-                        shipLenght = 3;
-                    }
-                    if (shipID === "patrol") {
-                        drag = document.getElementById("patrol");
-                        shipLenght = 2;
-
-                    }
-
+                    drag = document.getElementById(ev.target.id);
 
                     var drop = document.getElementById(`${tableLetters[i]}${tableNumbers[j]}`);
 
                     drag.addEventListener("dragstart", function (event) {
-                        event.dataTransfer.setData("Text", event.target.id);
+                        event.dataTransfer.setData("text", event.target.id);
                     });
 
                     drop.addEventListener("dragover", function (event) {
@@ -131,8 +104,23 @@ function createTable(games){
                     });
 
                     drop.addEventListener("drop", function (event) {
-                        var data = event.dataTransfer.getData("Text");
+                        var data = event.dataTransfer.getData("text");
                         event.target.appendChild(document.getElementById(data));
+                       if (data === "carrier") {
+                           shipLenght = 5;
+                       }
+                       if (data ==="battleship") {
+                           shipLenght = 4;
+                       }
+                        if (data === "submarine"){
+                            shipLenght = 3;
+                        }
+                        if (data === "destroyer") {
+                            shipLenght = 3;
+                        }
+                        if (data === "patrol") {
+                            shipLenght = 2;
+                        }
 
                         const gridId = event.target.id;
                         let myShip = data;
@@ -157,11 +145,8 @@ function createTable(games){
                         // if (Object.values(myShipsOnTable).flat().some(pos => shipPos.includes(pos))) {
                         //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "blue")
                         // }
-                        myShipsOnTable[myShip] = shipPos;
-                        console.log(myShip, "myShip", shipPos, "myShipPos", 11)
-                        console.log("object values",Object.values(myShipsOnTable), "Object keys", Object.keys(myShipsOnTable),55)
-                        console.log(shipPos.values(),112222)
-
+                        myShipsOnTable[myShip] = shipPos
+                        console.log(shipPos, Object.keys(myShipsOnTable))
                     });
 
                 });
@@ -172,13 +157,16 @@ const showRotateText =()=>{
     document.getElementById("rotateText").style.visibility ="visible"
 
 };
-const hideRotateText=()=>{
+const hideRotateText = () => {
     document.getElementById("rotateText").style.visibility ="hidden"
 
 }
 
-function rotateShips() {
-    var shipsRot = document.getElementById("patrol");
+const rotateShips = () => {
+    var shipsX = document.getElementsByTagName("img");
+shipsX.addEventListener("mouseover", function (ev) {
+    let shipsRot =document.getElementById(ev.target.id);
+
 
     if (shipsRot.className === "horizontal") {
         shipsRot.className = "vertical";
@@ -186,7 +174,7 @@ function rotateShips() {
     else if ( shipsRot.className === "vertical") {
         shipsRot.className = "horizontal";
     }
-
+})
 }
 
 function createShipLoc() {
