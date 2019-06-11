@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/api")
 public class SalvoController {
 
+
     @Autowired
     private GameRepository repositoryGame;
     @Autowired
@@ -108,7 +109,9 @@ public class SalvoController {
         }},HttpStatus.UNAUTHORIZED);
 
         }
+
     }
+
 
 
 
@@ -260,6 +263,7 @@ public class SalvoController {
         return new ResponseEntity<>(shipsAdded, HttpStatus.CREATED);
 
     }
+
 }
 
 

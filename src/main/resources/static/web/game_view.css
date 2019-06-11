@@ -19,33 +19,28 @@
 .shipsGrids{
     display: flex;
     flex-direction: row;
-    background-color: #ffffff;;
+    background-color: #ffffff;
 }
 
 #carrier{
     width: 220px;
     height: 42px;
-    /*background-image: url()*/
 }
 #battleship{
     width: 176px;
     height: 42px;
-    /*background-image: url("battleship.png")*/
 }
 #submarine{
     width: 132px;
     height: 42px;
-    /*background-image: url("submarine.png");*/
 }
 #destroyer{
     width: 132px;
     height: 42px;
-    /*background-image: url("destroyer.png");*/
 }
 #patrol{
     width: 88px;
     height: 42px;
-    /*background-image: url("patrol.png");*/
 }
 .table1 td{
     border: 1px solid darkblue;
@@ -79,4 +74,11 @@
 }
 .divSalvo{
     display: none;
+}
+.canotPlace img:hover{
+    color: red;
+}
+.canPlace{
+    border: 2px solid green;
+    border-radius: 23px;
 }

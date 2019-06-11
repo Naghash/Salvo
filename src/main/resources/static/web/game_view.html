@@ -12,22 +12,22 @@
 
         <p id="rotateText">Double click to rotate!</p>
         <div>
-            <img src="carrier.png" id="carrier" class="horizontal" alt="carrier" ondblclick="rotateShips()" draggable="true">
+            <img src="carrier.png" id="carrier" class="horizontal rotoShip" alt="carrier" ondblclick="rotateShips(event)" draggable="true">
         </div>
         <div>
-            <img src="battleship.png" id="battleship" class="horizontal" alt="battleship" ondblclick="rotateShips()" draggable="true">
+            <img src="battleship.png" id="battleship" class="horizontal rotoShip" alt="battleship" ondblclick="rotateShips(event)" draggable="true">
 
         </div>
         <div>
-            <img src="submarine.png" id="submarine" alt="submarine" class="horizontal" draggable="true">
+            <img src="submarine.png" id="submarine" alt="submarine" class="horizontal rotoShip" draggable="true">
 
         </div>
         <div>
-            <img src="destroyer.png" id="destroyer" alt="destroyer" class="horizontal" draggable="true" >
+            <img src="destroyer.png" id="destroyer" alt="destroyer" class="horizontal rotoShip" draggable="true" >
 
         </div>
         <div>
-            <img src="patrol.png" id="patrol" class="horizontal" alt="patrol" ondblclick="rotateShips()" draggable="true">
+            <img src="patrol.png" id="patrol" class="horizontal rotoShip" alt="patrol" ondblclick="rotateShips(event)" draggable="true">
         </div>
         <button onclick="postShips()">Ships</button>
     </div>

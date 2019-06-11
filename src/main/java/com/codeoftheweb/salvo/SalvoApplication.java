@@ -40,6 +40,7 @@ public class SalvoApplication{
     public CommandLineRunner initData(PlayerRepository repositoryPlayer, GameRepository repositoryGame, GamePlayerRepository repositoryGamePlayer, ShipRepository repositoryShip, SalvoRepository repositorySalvo, ScoreRepository repositoryScore) {
         return (args) -> {
 
+
             Player player1 = new Player("Jack Bauer", "24");
             Player player2 = new Player("Chloe O'Brian", "42");
             Player player3 = new Player("Kim Bauer", "kb");

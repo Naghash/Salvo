@@ -98,18 +98,18 @@ function createTable(games){
                         event.preventDefault();
 
                       if ( Object.values(myShipsOnTable).flat().some(pos => event.target.id.includes(pos))) {
-                            console.log("hey")
-                          event.target.style.backgroundColor= "red"
-                        }
+                        console.log("hey")
+                      }
                     });
 
                     drop.addEventListener("drop", function (event) {
                         var data = event.dataTransfer.getData("text");
                         event.target.appendChild(document.getElementById(data));
+
                        if (data === "carrier") {
                            shipLenght = 5;
                        }
-                       if (data ==="battleship") {
+                       if (data === "battleship") {
                            shipLenght = 4;
                        }
                         if (data === "submarine"){
@@ -123,20 +123,35 @@ function createTable(games){
                         }
 
                         const gridId = event.target.id;
+
                         let myShip = data;
                         let shipPos = [];
-
                         let myLetter = gridId.slice(0, 1);
                         let myNumber = Number(gridId.slice(1));
 
-                        // myPosition = tableLetters.indexOf(myLetter);
-                        if (myNumber + shipLenght < 12) {
-                            shipPos = tableNumbers.slice(myNumber - 1, (myNumber + shipLenght - 1));
-                        } else {
-                            shipPos = tableNumbers.slice(-shipLenght);
+                        if(drag.classList.contains("vertical")){
+
+                            if (tableLetters.indexOf(myLetter) + 1 + shipLenght < 11) {
+                            shipPos = tableLetters.slice(tableLetters.indexOf(myLetter), (tableLetters.indexOf(myLetter) + 1 + shipLenght - 1));
+
+                            } else {
+                                shipPos = tableLetters.slice(-shipLenght);
+                            }
+
+                            shipPos = shipPos.map(pos => pos + myNumber);
+
+                        }else if(drag.classList.contains("horizontal")) {
+
+                            if (myNumber + shipLenght < 11) {
+                                shipPos = tableNumbers.slice(myNumber - 1, (myNumber + shipLenght - 1));
+                            } else {
+                                shipPos = tableNumbers.slice(-shipLenght);
+                            }
+                            shipPos = shipPos.map(pos => myLetter + pos);
                         }
 
-                        shipPos = shipPos.map(pos => myLetter + pos);
+                        console.log(shipPos, "shipPos")
+
                         // if (Object.keys(myShipsOnTable).includes(myShip)) {
                         //     myShipsOnTable[myShip].forEach(pos => document.getElementById(pos).style.backgroundColor = "red")
                         // }
@@ -162,20 +177,19 @@ const hideRotateText = () => {
 
 }
 
-const rotateShips = () => {
-    var shipsX = document.getElementsByTagName("img");
-shipsX.addEventListener("mouseover", function (ev) {
-    let shipsRot =document.getElementById(ev.target.id);
+const rotateShips = (event) => {
 
+    let ship = event.target;
 
-    if (shipsRot.className === "horizontal") {
-        shipsRot.className = "vertical";
+        if (ship.classList.contains("horizontal")) {
+            ship.classList.add("vertical");
+            ship.classList.remove("horizontal");
+        }else {
+            ship.classList.add("horizontal");
+            ship.classList.remove("vertical");
+
+        }
     }
-    else if ( shipsRot.className === "vertical") {
-        shipsRot.className = "horizontal";
-    }
-})
-}
 
 function createShipLoc() {
 
